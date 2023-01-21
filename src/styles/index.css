@@ -11,3 +11,11 @@
 body{
   background-color: rgb(100, 100, 100);
 }
+
+.ui-page{
+  height: 90vh;
+}
+
+header{
+  height: 10vh;
+}
