@@ -11,15 +11,16 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
+import { toast } from "react-toastify"
 
 export const Header = () => {
 
     const navigate = useNavigate()
-    const { user } = useContext(Context)
+    const { user, loading } = useContext(Context)
 
     const signin = () => {
         signInWithPopup(auth,provider)
-        .catch(err => alert("Failed to sign in:\n"+err))
+        .catch(err => toast.error("Failed to sign in:\n"+err))
     }
 
     const signout = () => {
@@ -48,8 +49,8 @@ export const Header = () => {
         <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
             <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1Koperasi</h1>
            {user ?
-            <Avatar onClick={profileHandleClick} alt="profile picture" src={auth.currentUser.photoURL} className="cursor-pointer"/>
-            :<Avatar onClick={guestHandleClick} className="cursor-pointer" sx={{ bgcolor: "purple" }}>G</Avatar>
+            <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={auth.currentUser.photoURL} className="cursor-pointer"/>
+            :<Avatar onClick={!loading ? guestHandleClick : ()=>{return}} className="cursor-pointer" sx={{ bgcolor: "purple" }}>G</Avatar>
             }
              <Menu
                 id="guest-menu"
@@ -74,11 +75,11 @@ export const Header = () => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem>
+                <MenuItem onClick={() => {profileHandleClose(); navigate("/profile/"+auth.currentUser.email)}}>
                     <ListItemIcon>
                         <AccountBoxIcon fontSize="small"/>
                     </ListItemIcon>
-                    Dashboard
+                    Profile
                 </MenuItem>
                 <MenuItem onClick={() => {profileHandleClose(); navigate("/additem")}}>
                     <ListItemIcon>
