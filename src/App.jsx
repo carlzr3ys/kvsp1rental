@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.css';
 import Layout from './components/Layout/Layout'
@@ -13,10 +13,13 @@ import 'react-toastify/dist/ReactToastify.css';
 const Main = lazy(()=>import('./pages/Main').then(module => ({default:module.Main})))
 const AddItem = lazy(() => import('./pages/AddItem').then(module => ({default:module.AddItem})))
 const Profile = lazy(() => import('./pages/Profile').then(module => ({default:module.Profile})))
+const EditProfile = lazy(() => import('./pages/EditProfile').then(module => ({default:module.EditProfile})))
+const Product = lazy(() => import('./pages/Product').then(module => ({default:module.Product})))
 
 function App() {
 
   const [user,loading] = useAuthState(auth)
+  const memo = useMemo(() => ({user:user,loading:loading}),[user,loading])
 
   useEffect(()=>{
     if(!user)return;
@@ -43,8 +46,8 @@ function App() {
 
   const checkUserProperties = async(data) => {
     let dataToInsert = {}
-    if(!data.hasOwnProperty("Name")){
-      dataToInsert = {...dataToInsert,"Name":auth.currentUser.displayName}
+    if(!data.hasOwnProperty("Username")){
+      dataToInsert = {...dataToInsert,"Username":auth.currentUser.displayName}
     }
     if(!data.hasOwnProperty("Image")){
       dataToInsert = {...dataToInsert,"Image":auth.currentUser.photoURL}
@@ -55,7 +58,7 @@ function App() {
   return (
     <HashRouter>
       <div className="App">
-        <Context.Provider value ={{user,loading}}>
+        <Context.Provider value ={memo}>
           <Layout>
             <Suspense fallback={<Loader/>}>
               <Routes>
@@ -63,6 +66,8 @@ function App() {
                 <Route path='/' element={<Main/>}/>
                 <Route path='/additem' element={<AddItem/>}/>
                 <Route path='/profile/:email' element={<Profile/>}/>
+                <Route path="/editprofile/:email" element={<EditProfile/>}/>
+                <Route path="/product/:id" element={<Product/>}/>
 
               </Routes>
               <ToastContainer

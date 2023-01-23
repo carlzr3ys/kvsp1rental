@@ -7,13 +7,19 @@ import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import LinearProgress from "@mui/material/LinearProgress"
 import { auth, storage, db } from '../firebase'
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { toast } from "react-toastify";
 
 const categories = [
     {value:"Basic",label:"Basic"},
     {value:"Stationery",label:"Stationery"}
+]
+
+const statuses = [
+    {value:"Available",label:"Available"},
+    {value:"Sold Out",label:"Sold Out"},
+    {value:"Coming Soon",label:"Coming Soon"}
 ]
 
 export const AddItem = () => {
@@ -25,6 +31,7 @@ export const AddItem = () => {
     const [priceError, setPriceError] = useState(false)
 
     const [itemData,setItemData] = useState({
+        itemStatus:"Available",
         itemName:"",
         itemDescription:"",
         itemImage:"",
@@ -70,9 +77,17 @@ export const AddItem = () => {
     }
 
     const addItem = async() => {
-        const docRef = await addDoc(collection(db,"items"),itemData)
-        navigate("/")
-        toast.success("Item added with ID: "+docRef.id)
+        const docRef = await addDoc(collection(db,"items"),{...itemData,createdAt:serverTimestamp()})
+        .catch(err => {
+            toast.error("Failed to add item:\n"+err,{autoClose:5000})
+        })
+
+        if(docRef){
+            navigate("/profile/"+auth.currentUser.email)
+            toast.success("Item added with ID: "+docRef.id)
+        }
+
+        
     }
 
     const imageUpload = async(e) => {
@@ -129,6 +144,7 @@ export const AddItem = () => {
                     label="Item Description"
                     variant="filled"
                     maxRows={5}
+                    className="text-justify"
                 />
                 <br/><br/>
 
@@ -166,16 +182,35 @@ export const AddItem = () => {
                 </TextField>
                 <br/><br/>
 
+                <TextField 
+                    fullWidth 
+                    label="Status"
+                    variant="filled"
+                    required
+                    select
+                    onChange={(e)=>setItemData({...itemData,itemStatus:e.target.value})}
+                    value={itemData.itemStatus}
+                >
+                    {statuses.map((option) => {
+                        return (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        )
+                    })}
+                </TextField>
+                <br/><br/>
+
                 <h1>Item Image:</h1>
                 <input type="file" accept="image/*" 
                     onChange={(e) => imageUpload(e)}
                 />
                 <br/><br/>
                 {uploadProgress && uploadProgress != 100?
-                        <div className="text-center">
-                            <LinearProgress className="mx-auto" id="videoUploadProgressBar" variant="determinate" value={uploadProgress}/>
-                            <p id="videoUploadPercentage">{uploadProgress}%</p>
-                        </div>
+                    <div className="text-center">
+                        <LinearProgress className="mx-auto" id="videoUploadProgressBar" variant="determinate" value={uploadProgress}/>
+                        <p id="videoUploadPercentage">{uploadProgress}%</p>
+                    </div>
                 : ""}
                 <br/>
                 <div className="flex flex-col justify-center items-center">

@@ -1,8 +1,8 @@
 import Avatar from "@mui/material/Avatar"
 import { useNavigate } from "react-router-dom"
 import { Context } from "../../Context"
-import { useContext, useState } from "react"
-import { auth, provider } from "../../firebase"
+import { useContext, useState, useEffect } from "react"
+import { auth, db, provider } from "../../firebase"
 import { signInWithPopup } from "firebase/auth"
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem';
@@ -12,20 +12,30 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import { toast } from "react-toastify"
+import { onSnapshot, doc } from "firebase/firestore"
 
 export const Header = () => {
 
     const navigate = useNavigate()
     const { user, loading } = useContext(Context)
+    const [profileData, setProfileData] = useState({})
+
+    useEffect(()=>{
+        if(!user)return
+
+        onSnapshot(doc(db,"admins",auth.currentUser.email), snapshot => {
+            setProfileData({...snapshot.data()})
+        })
+    },[user])
 
     const signin = () => {
         signInWithPopup(auth,provider)
+        .then(() => navigate("/profile/"+auth.currentUser.email))
         .catch(err => toast.error("Failed to sign in:\n"+err))
     }
 
     const signout = () => {
         auth.signOut()
-        navigate("/")
     }
 
     const [profileAnchorEl, setProfileAnchorEl] = useState(null);
@@ -48,10 +58,11 @@ export const Header = () => {
     return (
         <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
             <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1Koperasi</h1>
-           {user ?
-            <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={auth.currentUser.photoURL} className="cursor-pointer"/>
-            :<Avatar onClick={!loading ? guestHandleClick : ()=>{return}} className="cursor-pointer" sx={{ bgcolor: "purple" }}>G</Avatar>
-            }
+           {!loading ? (user ?
+            <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={profileData.Image} className="cursor-pointer"/>
+            :<Avatar onClick={!loading ? guestHandleClick : ()=>{return}} className="cursor-pointer" sx={{ bgcolor: "gray" }}/>
+            ) 
+            : <Avatar sx={{ bgcolor: "gray" }}>...</Avatar>}
              <Menu
                 id="guest-menu"
                 anchorEl={guestAnchorEl}
