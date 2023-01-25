@@ -14,8 +14,8 @@ export const ProductCard = (props) => {
         >
           <div className="flex items-center justify-center overflow-hidden">
             <LazyLoadImage
-              className="rounded-t-lg" 
-              style={{maxHeight:"200px", transition:".2s ease-in-out"}} 
+              className="rounded-t-lg object-cover" 
+              style={{maxHeight:"300px", transition:".2s ease-in-out"}} 
               src={item.data().itemImage} 
               alt={item.data.itemName}
               onMouseOver={e => {

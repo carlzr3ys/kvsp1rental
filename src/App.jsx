@@ -15,6 +15,8 @@ const AddItem = lazy(() => import('./pages/AddItem').then(module => ({default:mo
 const Profile = lazy(() => import('./pages/Profile').then(module => ({default:module.Profile})))
 const EditProfile = lazy(() => import('./pages/EditProfile').then(module => ({default:module.EditProfile})))
 const Product = lazy(() => import('./pages/Product').then(module => ({default:module.Product})))
+const EditProduct = lazy(() => import('./pages/EditProduct').then(module => ({default:module.EditProduct})))
+const NewOrder = lazy(() => import('./pages/NewOrder').then(module => ({default:module.NewOrder})))
 
 function App() {
 
@@ -68,6 +70,8 @@ function App() {
                 <Route path='/profile/:email' element={<Profile/>}/>
                 <Route path="/editprofile/:email" element={<EditProfile/>}/>
                 <Route path="/product/:id" element={<Product/>}/>
+                <Route path="/editproduct/:id" element={<EditProduct/>}/>
+                <Route path="/neworder/:id" element={<NewOrder/>}/>
 
               </Routes>
               <ToastContainer

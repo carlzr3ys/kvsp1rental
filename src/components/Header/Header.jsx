@@ -57,7 +57,7 @@ export const Header = () => {
 
     return (
         <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
-            <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1Koperasi</h1>
+            <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 E-Mart</h1>
            {!loading ? (user ?
             <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={profileData.Image} className="cursor-pointer"/>
             :<Avatar onClick={!loading ? guestHandleClick : ()=>{return}} className="cursor-pointer" sx={{ bgcolor: "gray" }}/>
@@ -96,7 +96,7 @@ export const Header = () => {
                     <ListItemIcon>
                         <AddIcon fontSize="small"/>
                     </ListItemIcon>
-                    Add Item
+                    Add Product
                 </MenuItem>
                 <MenuItem onClick={() => {profileHandleClose(); signout()}}>
                     <ListItemIcon>
