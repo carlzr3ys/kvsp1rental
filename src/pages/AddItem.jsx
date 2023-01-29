@@ -11,11 +11,6 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { toast } from "react-toastify";
 
-const categories = [
-    {value:"Basic",label:"Basic"},
-    {value:"Stationery",label:"Stationery"}
-]
-
 const statuses = [
     {value:"Available",label:"Available"},
     {value:"Sold Out",label:"Sold Out"},
@@ -24,7 +19,7 @@ const statuses = [
 
 export const AddItem = () => {
 
-    const { user } = useContext(Context)
+    const { user, categories } = useContext(Context)
     const navigate = useNavigate()
 
     const [nameError, setNameError] = useState(false)
@@ -37,7 +32,8 @@ export const AddItem = () => {
         itemImage:"",
         itemPrice:"",
         category:"Basic",
-        retailerEmail:user ? auth.currentUser.email : ""
+        retailerEmail:user ? auth.currentUser.email : "",
+        itemOrders:0
     })
 
     const [uploadProgress, setUploadProgress] = useState(null);

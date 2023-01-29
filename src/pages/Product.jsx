@@ -59,8 +59,8 @@ export const Product = () => {
                     <Button onClick={() => navigate("/editproduct/"+id)} variant="contained">Edit Product</Button>
                 </div>
                 }
-                <p>by <Link className="underline text-sky-600" to={"/profile/"+productInfo.retailerEmail}>{ownerInfo.Username}</Link></p>
-                <p>Category: {productInfo.category}</p>
+                <p>by <Link className="underline text-sky-800" to={"/profile/"+productInfo.retailerEmail}>{ownerInfo.Username}</Link></p>
+                <p>Category: <Link className="underline text-sky-800" to={"/category/"+productInfo.category}>{productInfo.category}</Link></p>
                 <p>Status: <span style={{color:statusColor}}>{productInfo.itemStatus}</span></p>
                 <br/>
                 <TextField

@@ -17,11 +17,18 @@ const EditProfile = lazy(() => import('./pages/EditProfile').then(module => ({de
 const Product = lazy(() => import('./pages/Product').then(module => ({default:module.Product})))
 const EditProduct = lazy(() => import('./pages/EditProduct').then(module => ({default:module.EditProduct})))
 const NewOrder = lazy(() => import('./pages/NewOrder').then(module => ({default:module.NewOrder})))
+const Category = lazy(() => import("./pages/Category").then(module => ({default:module.Category})))
+const Search = lazy(() => import('./pages/Search').then(module => ({default:module.Search})))
 
 function App() {
 
   const [user,loading] = useAuthState(auth)
-  const memo = useMemo(() => ({user:user,loading:loading}),[user,loading])
+  const categories = [
+    {value:"Basic",label:"Basic"},
+    {value:"Stationery",label:"Stationery"}
+  ]
+
+  const memo = useMemo(() => ({user:user,loading:loading,categories:categories}),[user,loading])
 
   useEffect(()=>{
     if(!user)return;
@@ -72,6 +79,8 @@ function App() {
                 <Route path="/product/:id" element={<Product/>}/>
                 <Route path="/editproduct/:id" element={<EditProduct/>}/>
                 <Route path="/neworder/:id" element={<NewOrder/>}/>
+                <Route path="/category/:category" element={<Category/>}/>
+                <Route path="/search/:searchQuery" element={<Search/>}/>
 
               </Routes>
               <ToastContainer

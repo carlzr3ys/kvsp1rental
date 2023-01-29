@@ -143,7 +143,7 @@ export const EditProfile = () => {
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} 
                     label="Phone Number"
                     variant="filled"
-                    helperText="Must be numbers"
+                    helperText="Must be numbers | Includes country code"
                     required
                     error={phoneError}
                 />

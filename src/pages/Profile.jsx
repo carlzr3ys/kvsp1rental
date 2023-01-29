@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import Avatar from '@mui/material/Avatar'
 import { db, auth } from "../firebase"
-import { onSnapshot, doc, collection, query, where } from "firebase/firestore"
+import { onSnapshot, doc, collection, query, where, startAfter,limit, orderBy } from "firebase/firestore"
 import { useEffect, useState, useContext } from "react"
 import { Context } from "../Context"
 import Button from '@mui/material/Button'
@@ -15,6 +15,7 @@ export const Profile = () => {
     const { email } = useParams()
     const { user } = useContext(Context)
     let [ownedItems,setOwnedItems] = useState([])
+    const [showMore, setShowMore] = useState(true)
 
     useEffect(()=>{
         onSnapshot(doc(db,"admins",email), snapshot => {
@@ -26,20 +27,26 @@ export const Profile = () => {
           }
         })
 
-        onSnapshot(query(collection(db,"items"),where("retailerEmail","==",email)), snapshot => {
-          setOwnedItems([...snapshot.docs.sort(compareTime)])
+        const firstBatch = query(collection(db,"items"),orderBy("createdAt","desc"),where("retailerEmail","==",email),limit(10))
+        onSnapshot(firstBatch, snapshot => {
+          if(snapshot.size > 0){
+            setOwnedItems([...snapshot.docs])
+          }else{
+            setShowMore(false)
+          }
         })
 
     },[])
 
-    const compareTime = (a,b) => {
-      if ( a.data().createdAt.toDate().valueOf() > b.data().createdAt.toDate().valueOf() ){
-        return -1;
-      }
-      if ( a.data().createdAt.toDate().valueOf() < b.data().createdAt.toDate().valueOf()){
-        return 1;
-      }
-      return 0;
+    const handleViewMore = () => {
+      const nextBatch = query(collection(db,"items"),orderBy("createdAt","desc"),where("retailerEmail","==",email),startAfter(ownedItems[ownedItems.length-1].data().createdAt),limit(10))
+      onSnapshot(nextBatch,snapshot => {
+        if(snapshot.size > 0){
+          setOwnedItems([...ownedItems,...snapshot.docs])
+        }else{
+          setShowMore(false)
+        }
+      })
     }
 
     return(
@@ -70,7 +77,12 @@ export const Profile = () => {
                 <h1 className="text-xl font-bold text-center text-white">
                   Not Selling...
                 </h1>}
-                </div>
+              </div>
+              <br/>
+              {showMore ? 
+              <div className="text-center">
+                <Button onClick={handleViewMore} variant="contained">SHOW MORE</Button>
+              </div> : ""}
             </div> : ""}
             
         </div>
