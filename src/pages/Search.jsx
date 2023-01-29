@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate  } from "react-router-dom"
 import { getDocs, collection, orderBy, startAfter, query,limit } from "firebase/firestore"
 import { db } from "../firebase"
 import { useState, useEffect } from "react"
@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton'
-import { useNavigate } from "react-router-dom"
 
 export const Search = () => {
 
@@ -64,7 +63,7 @@ export const Search = () => {
 
     const handleSearch = e => {
         e.preventDefault()
-        if(searchText !== ""){
+        if(searchText !== "" && searchText.length > 0 && searchText !== searchQuery){
             navigate("/search/"+searchText)
             window.location.reload()
         }

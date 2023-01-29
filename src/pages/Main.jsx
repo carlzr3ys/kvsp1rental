@@ -13,7 +13,7 @@ export const Main = () => {
 
     const [latestProducts, setLatestProducts] = useState([])
     const [hottestProducts, setHottestProducts] = useState([])
-    const [searchQuery, setSearchQuery] = useState([])
+    const [searchQuery, setSearchQuery] = useState("")
 
     const { categories } = useContext(Context)
     const navigate = useNavigate()
@@ -49,7 +49,7 @@ export const Main = () => {
 
     const handleSearch = e => {
         e.preventDefault()
-        if(searchQuery !== ""){
+        if(searchQuery !== "" || searchQuery.length > 0){
             navigate("/search/"+searchQuery)
         }
     }
