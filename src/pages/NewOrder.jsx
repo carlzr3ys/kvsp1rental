@@ -100,7 +100,7 @@ export const NewOrder= () => {
         <b>NEW ORDER</b>\n
 <b>CUSTOMER INFORMATION</b>
 Customer Name: ${orderData.ordererName}
-Customer Phone: ${orderData.ordererPhone}
+Customer Phone: <a href="tel:${orderData.ordererPhone}">${orderData.ordererPhone}</a>
 
 <b>ORDERED PRODUCT</b>
 Product Name: ${productInfo.itemName}
