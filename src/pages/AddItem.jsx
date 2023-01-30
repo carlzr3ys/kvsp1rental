@@ -42,6 +42,7 @@ export const AddItem = () => {
         if(!user){
             navigate("/")
         }
+        document.title = "KVSP1 eMart | Add Item"
     },[user])
 
     const handleSubmit = (e) => {

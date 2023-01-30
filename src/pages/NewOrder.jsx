@@ -1,12 +1,9 @@
-import { Context } from "../Context"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import { auth, storage, db } from '../firebase'
-import { collection, addDoc, serverTimestamp, onSnapshot, doc } from "firebase/firestore";
+import { db } from '../firebase'
+import { onSnapshot, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
@@ -40,6 +37,7 @@ export const NewOrder= () => {
     useEffect(() => {
         onSnapshot(doc(db,"items",id),snapshot => {
             setProductInfo({...snapshot.data(),id:snapshot.id})
+            document.title = `KVSP1 eMart | New Order | ${snapshot.data().itemName}`
             onSnapshot(doc(db,"admins",snapshot.data().retailerEmail), adminSnapshot => {
                 setOwnerTelegramUserID(adminSnapshot.data().TelegramUserID)
             })

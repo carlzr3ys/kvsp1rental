@@ -19,6 +19,7 @@ export const Search = () => {
 
     useEffect(() => {
         getFirstBatch()
+        document.title = `KVSP1 eMart | Search | ${searchQuery}`
     },[])
 
     const getFirstBatch = async() => {

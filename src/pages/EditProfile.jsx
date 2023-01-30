@@ -43,6 +43,7 @@ export const EditProfile = () => {
                 }
             })
         }
+        document.title = `KVSP1 eMart | Edit Profile | ${email}`
       },[email])
 
     useEffect(()=>{

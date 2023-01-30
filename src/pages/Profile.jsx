@@ -5,7 +5,6 @@ import { onSnapshot, doc, collection, query, where, startAfter,limit, orderBy } 
 import { useEffect, useState, useContext } from "react"
 import { Context } from "../Context"
 import Button from '@mui/material/Button'
-import { LazyLoadImage } from "react-lazy-load-image-component"
 import { ProductCard } from "../components/ProductCard"
 
 export const Profile = () => {
@@ -24,6 +23,7 @@ export const Profile = () => {
             navigate("/")
           }else{
             setProfileData({...snapshot.data()})
+            document.title = `KVSP1 eMart | ${snapshot.data().Username}`
           }
         })
 

@@ -13,6 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import { toast } from "react-toastify"
 import { onSnapshot, doc } from "firebase/firestore"
+import List from "@mui/material/List"
 
 export const Header = () => {
 
@@ -56,55 +57,62 @@ export const Header = () => {
     };
 
     return (
-        <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
-            <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 E-Mart</h1>
-           {!loading ? (user ?
-            <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={profileData.Image} className="cursor-pointer"/>
-            :<Avatar onClick={!loading ? guestHandleClick : ()=>{return}} className="cursor-pointer" sx={{ bgcolor: "gray" }}/>
-            ) 
-            : <Avatar sx={{ bgcolor: "gray" }}>...</Avatar>}
-             <Menu
-                id="guest-menu"
-                anchorEl={guestAnchorEl}
-                open={guestOpen}
-                onClose={guestHandleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-                <MenuItem onClick={() => {guestHandleClose(); signin()}}>
-                    <ListItemIcon><LoginIcon fontSize="small"/></ListItemIcon>
-                    Admin Login
-                </MenuItem>
-            </Menu>
-            <Menu
-                id="profile-menu"
-                anchorEl={profileAnchorEl}
-                open={profileOpen}
-                onClose={profileHandleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-                <MenuItem onClick={() => {profileHandleClose(); navigate("/profile/"+auth.currentUser.email)}}>
-                    <ListItemIcon>
-                        <AccountBoxIcon fontSize="small"/>
-                    </ListItemIcon>
-                    Profile
-                </MenuItem>
-                <MenuItem onClick={() => {profileHandleClose(); navigate("/additem")}}>
-                    <ListItemIcon>
-                        <AddIcon fontSize="small"/>
-                    </ListItemIcon>
-                    Add Product
-                </MenuItem>
-                <MenuItem onClick={() => {profileHandleClose(); signout()}}>
-                    <ListItemIcon>
-                        <LogoutIcon fontSize="small"/>
-                    </ListItemIcon>
-                    Logout
-                </MenuItem>
-            </Menu>
-        </header>
+        <div>
+            <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
+                <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 E-Mart</h1>
+                <div className="flex items-center border">
+                    <div className="mr-5">
+                        Home
+                    </div>
+                {!loading ? (user ?
+                    <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={profileData.Image} className="cursor-pointer"/>
+                    :<Avatar onClick={!loading ? guestHandleClick : ()=>{return}} className="cursor-pointer" sx={{ bgcolor: "gray" }}/>
+                    ) 
+                    : <Avatar sx={{ bgcolor: "gray" }}>...</Avatar>}
+                    <Menu
+                        id="guest-menu"
+                        anchorEl={guestAnchorEl}
+                        open={guestOpen}
+                        onClose={guestHandleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={() => {guestHandleClose(); signin()}}>
+                            <ListItemIcon><LoginIcon fontSize="small"/></ListItemIcon>
+                            Admin Login
+                        </MenuItem>
+                    </Menu>
+                    <Menu
+                        id="profile-menu"
+                        anchorEl={profileAnchorEl}
+                        open={profileOpen}
+                        onClose={profileHandleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={() => {profileHandleClose(); navigate("/profile/"+auth.currentUser.email)}}>
+                            <ListItemIcon>
+                                <AccountBoxIcon fontSize="small"/>
+                            </ListItemIcon>
+                            Profile
+                        </MenuItem>
+                        <MenuItem onClick={() => {profileHandleClose(); navigate("/additem")}}>
+                            <ListItemIcon>
+                                <AddIcon fontSize="small"/>
+                            </ListItemIcon>
+                            Add Product
+                        </MenuItem>
+                        <MenuItem onClick={() => {profileHandleClose(); signout()}}>
+                            <ListItemIcon>
+                                <LogoutIcon fontSize="small"/>
+                            </ListItemIcon>
+                            Logout
+                        </MenuItem>
+                    </Menu>
+                </div>
+            </header>
+        </div>
     )
 }

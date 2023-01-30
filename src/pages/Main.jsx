@@ -21,6 +21,7 @@ export const Main = () => {
     useEffect(() => {
         getLatest()
         getHottest()
+        document.title = "KVSP1 eMart | Home"
     },[])
 
     const getLatest = async() => {
