@@ -1,8 +1,7 @@
 import { db } from "../firebase"
 import { collection, orderBy, limit, query, getDocs } from "firebase/firestore"
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState } from "react"
 import { ProductCard } from "../components/ProductCard"
-import { Context } from "../Context"
 import { useNavigate } from "react-router-dom"
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -14,8 +13,6 @@ export const Main = () => {
     const [latestProducts, setLatestProducts] = useState([])
     const [hottestProducts, setHottestProducts] = useState([])
     const [searchQuery, setSearchQuery] = useState("")
-
-    const { categories } = useContext(Context)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -100,19 +97,6 @@ export const Main = () => {
                </div>
             </div>
             <br/><br/>
-            <div>
-                <h1 className="text-white text-3xl font-bold">Categories</h1>
-                <br/>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {categories.map((category,i) => {
-                        return (
-                            <div key={i} onClick={() => navigate("/category/"+category.value)} className="bg-white text-center p-4 rounded-lg cursor-pointer">
-                                <h1 className="text-xl font-bold">{category.label}</h1>
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
         </div>
     )
 }

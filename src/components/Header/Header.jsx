@@ -11,15 +11,23 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
-import { toast } from "react-toastify"
-import { onSnapshot, doc } from "firebase/firestore"
-import List from "@mui/material/List"
+import { toast } from "react-toastify";
+import { onSnapshot, doc } from "firebase/firestore";
+import List from '@mui/joy/List';
+import ListDivider from '@mui/joy/ListDivider';
+import ListItem from '@mui/joy/ListItem';
+import ListItemButton from '@mui/joy/ListItemButton';
+import HomeIcon from '@mui/icons-material/Home'
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/joy/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const Header = () => {
 
     const navigate = useNavigate()
     const { user, loading } = useContext(Context)
     const [profileData, setProfileData] = useState({})
+    const [menuPosition, setMenuPosition] = useState("-100vw")
 
     useEffect(()=>{
         if(!user)return
@@ -56,13 +64,44 @@ export const Header = () => {
         setGuestAnchorEl(null);
     };
 
+    const openMobileMenu = () => {
+        setMenuPosition("0")
+    }
+
+    const closeMobileMenu = () => {
+        setMenuPosition("-100vw")
+    }
+
     return (
         <div>
             <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
                 <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 E-Mart</h1>
-                <div className="flex items-center border">
-                    <div className="mr-5">
-                        Home
+                <div className="flex items-center">
+                    <div className="hidden sm:block">
+                        <List row>
+                            <ListItem>
+                                <ListItemButton onClick={() => navigate("/")}>
+                                    <HomeIcon/>
+                                </ListItemButton>
+                            </ListItem>
+                            <ListDivider/>
+                            <ListItem>
+                                <ListItemButton onClick={() => navigate("/products")}>
+                                    Products
+                                </ListItemButton>
+                            </ListItem>
+                            <ListDivider/>
+                            <ListItem>
+                                <ListItemButton>
+                                    Cart
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
+                    </div>
+                    <div className="block sm:hidden">
+                        <IconButton onClick={() => openMobileMenu()}>
+                            <MenuIcon/>
+                        </IconButton>
                     </div>
                 {!loading ? (user ?
                     <Avatar onClick={!loading ? profileHandleClick : ()=>{return}} alt="profile picture" src={profileData.Image} className="cursor-pointer"/>
@@ -113,6 +152,33 @@ export const Header = () => {
                     </Menu>
                 </div>
             </header>
+            <div 
+                className="w-screen h-screen fixed top-0 bg-slate-400 transition-all z-10 p-6"
+                style={{left:menuPosition}}
+            >
+                <IconButton className="float-right" onClick={() => closeMobileMenu()}>
+                    <CloseIcon fontSize="medium"/>
+                </IconButton>
+                <List>
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/"); closeMobileMenu()}}>
+                            <HomeIcon fontSize="large"/>
+                        </ListItemButton>
+                    </ListItem>
+                    <ListDivider/>
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/products"); closeMobileMenu()}}>
+                            <span className="text-2xl">Products</span>
+                        </ListItemButton>
+                    </ListItem>
+                    <ListDivider/>
+                    <ListItem>
+                        <ListItemButton>
+                            <span className="text-2xl">Cart</span>
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+            </div>
         </div>
     )
 }

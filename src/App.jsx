@@ -19,6 +19,7 @@ const EditProduct = lazy(() => import('./pages/EditProduct').then(module => ({de
 const NewOrder = lazy(() => import('./pages/NewOrder').then(module => ({default:module.NewOrder})))
 const Category = lazy(() => import("./pages/Category").then(module => ({default:module.Category})))
 const Search = lazy(() => import('./pages/Search').then(module => ({default:module.Search})))
+const Products = lazy(() => import('./pages/Products').then(module => ({default:module.Products})))
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
                 <Route path="/neworder/:id" element={<NewOrder/>}/>
                 <Route path="/category/:category" element={<Category/>}/>
                 <Route path="/search/:searchQuery" element={<Search/>}/>
+                <Route path="/products" element={<Products/>}/>
 
               </Routes>
               <ToastContainer
