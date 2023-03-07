@@ -18,6 +18,7 @@ export const Product = () => {
     const [productInfo, setProductInfo] = useState(null)
     const [ownerInfo, setOwnerInfo] = useState(null)
     let [statusColor, setStatusColor] = useState("green")
+    const [added, setAdded] = useState(false)
 
     useEffect(() => {
         onSnapshot(doc(db,"items",id),snapshot => {
@@ -25,7 +26,7 @@ export const Product = () => {
                 navigate("/")
                 toast.error("Product with ID:'"+id+"' doesn't exist")
             }else{
-                setProductInfo({...snapshot.data()})
+                setProductInfo({...snapshot.data(), id})
                 document.title = `KVSP1 eMart | ${snapshot.data().itemName}`
                 if(snapshot.data().itemStatus === "Available"){
                     setStatusColor("green")
@@ -39,10 +40,28 @@ export const Product = () => {
                 })
             }
         })
+        if(JSON.parse(localStorage.getItem("items"))){
+            let storage = JSON.parse(localStorage.getItem("items"))
+            for(let i=0;i<storage.length;i++){
+                if(storage[i].id === id){
+                    setAdded(true)
+                    console.log("added")
+                }
+            }
+        }
     },[])
 
     const handleOrder = () => {
-        navigate("/neworder/"+id)
+        let storage = JSON.parse(localStorage.getItem("items"))
+        let newstorage
+        if(!storage){
+            newstorage = [{...productInfo,quantity:1}]
+        }else{
+            newstorage = [...storage,{...productInfo,quantity:1}]
+        }
+        
+        localStorage.setItem("items",JSON.stringify(newstorage))
+        setAdded(true)
     }
 
     return (
@@ -93,8 +112,9 @@ export const Product = () => {
                     color="success"
                     variant="contained"
                     sx={{fontSize:"20px",fontWeight:"bold"}}
+                    disabled={added}
                 >
-                    ORDER
+                    {added ? "ADDED TO CART" : "ADD TO CART"}
                 </Button>:(auth.currentUser.email === productInfo.retailerEmail ? "":
                 <Button
                     onClick={() => handleOrder()}
@@ -102,8 +122,9 @@ export const Product = () => {
                     color="success"
                     variant="contained"
                     sx={{fontSize:"20px",fontWeight:"bold"}}
+                    disabled={added}
                 >
-                    ORDER
+                    {added ? "ADDED TO CART" : "ADD TO CART"}
                 </Button>)}
             </div>
             : <h1 className="text-xl font-bold text-white">Loading...</h1>}

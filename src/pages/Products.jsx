@@ -1,11 +1,15 @@
 import { Context } from "../Context"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 export const Products = () => {
 
     const { categories } = useContext(Context)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        document.title = "KVSP1 | Products"
+    },[])
 
     return (
         <div className="p-4">

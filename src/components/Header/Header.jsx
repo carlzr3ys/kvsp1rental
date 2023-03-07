@@ -21,6 +21,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/joy/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 export const Header = () => {
 
@@ -92,8 +93,8 @@ export const Header = () => {
                             </ListItem>
                             <ListDivider/>
                             <ListItem>
-                                <ListItemButton>
-                                    Cart
+                                <ListItemButton onClick={() => navigate("/cart")}>
+                                    <ShoppingCartIcon/>
                                 </ListItemButton>
                             </ListItem>
                         </List>
@@ -173,8 +174,8 @@ export const Header = () => {
                     </ListItem>
                     <ListDivider/>
                     <ListItem>
-                        <ListItemButton>
-                            <span className="text-2xl">Cart</span>
+                        <ListItemButton onClick={() => {navigate("/cart"); closeMobileMenu()}}>
+                            <ShoppingCartIcon fontSize="large"/>
                         </ListItemButton>
                     </ListItem>
                 </List>

@@ -20,6 +20,7 @@ const NewOrder = lazy(() => import('./pages/NewOrder').then(module => ({default:
 const Category = lazy(() => import("./pages/Category").then(module => ({default:module.Category})))
 const Search = lazy(() => import('./pages/Search').then(module => ({default:module.Search})))
 const Products = lazy(() => import('./pages/Products').then(module => ({default:module.Products})))
+const Cart = lazy(() => import('./pages/Cart').then(module => ({default:module.Cart})))
 
 function App() {
 
@@ -29,7 +30,11 @@ function App() {
     {value:"Stationery",label:"Stationery"}
   ]
 
-  const memo = useMemo(() => ({user:user,loading:loading,categories:categories}),[user,loading])
+  const memo = useMemo(() => ({
+    user:user,
+    loading:loading,
+    categories:categories
+  }),[user,loading])
 
   useEffect(()=>{
     if(!user)return;
@@ -83,6 +88,7 @@ function App() {
                 <Route path="/category/:category" element={<Category/>}/>
                 <Route path="/search/:searchQuery" element={<Search/>}/>
                 <Route path="/products" element={<Products/>}/>
+                <Route path="/cart" element={<Cart/>}/>
 
               </Routes>
               <ToastContainer
