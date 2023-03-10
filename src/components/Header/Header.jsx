@@ -22,6 +22,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/joy/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 export const Header = () => {
 
@@ -80,19 +81,19 @@ export const Header = () => {
                 <div className="flex items-center">
                     <div className="hidden sm:block">
                         <List row>
-                            <ListItem>
+                            <ListItem title="Home">
                                 <ListItemButton onClick={() => navigate("/")}>
                                     <HomeIcon/>
                                 </ListItemButton>
                             </ListItem>
                             <ListDivider/>
-                            <ListItem>
+                            <ListItem title="Products">
                                 <ListItemButton onClick={() => navigate("/products")}>
-                                    Products
+                                    <ShoppingBagIcon/>
                                 </ListItemButton>
                             </ListItem>
                             <ListDivider/>
-                            <ListItem>
+                            <ListItem title="Cart">
                                 <ListItemButton onClick={() => navigate("/cart")}>
                                     <ShoppingCartIcon/>
                                 </ListItemButton>
@@ -163,7 +164,7 @@ export const Header = () => {
                 <List>
                     <ListItem>
                         <ListItemButton onClick={() => {navigate("/"); closeMobileMenu()}}>
-                            <HomeIcon fontSize="large"/>
+                            <span className="text-2xl">Home</span>
                         </ListItemButton>
                     </ListItem>
                     <ListDivider/>
@@ -175,7 +176,7 @@ export const Header = () => {
                     <ListDivider/>
                     <ListItem>
                         <ListItemButton onClick={() => {navigate("/cart"); closeMobileMenu()}}>
-                            <ShoppingCartIcon fontSize="large"/>
+                            <span className="text-2xl">Cart</span>
                         </ListItemButton>
                     </ListItem>
                 </List>
