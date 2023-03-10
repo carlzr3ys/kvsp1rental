@@ -2,17 +2,19 @@ import { useEffect, useState } from "react"
 import { CartItem } from "../components/CartItem"
 import Button from "@mui/material/Button"
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import { useNavigate } from "react-router-dom";
 
 export const Cart = () => {
 
     const [items, setItems] = useState(JSON.parse(localStorage.getItem("items")) || null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         document.title = "KVSP1 | Cart"
     },[])
 
     const checkout = () => {
-        console.log("checkout")
+        navigate("/neworder")
     }
 
     return (

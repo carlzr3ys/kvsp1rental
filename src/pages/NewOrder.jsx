@@ -7,40 +7,28 @@ import { onSnapshot, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-export const NewOrder= () => {
+export const NewOrder = () => {
 
     const navigate = useNavigate()
-    const { id } = useParams()
 
     const [nameError, setNameError] = useState(false)
     const [phoneError, setPhoneError] = useState(false)
-    const [descriptionError, setDescriptionError] = useState(false)
-    const [quantityError, setQuantityError] = useState(false)
-
     const [orderData,setOrderData] = useState({
         ordererName:"",
         ordererPhone:"",
-        quantity:"",
-        orderProductId:id,
-        orderDescription:"",
-    
     })
-
-    const [productInfo,setProductInfo] = useState({
-        itemName:"",
-        itemImage:"",
-        id:""
-    })
+    const [items,setItems] = useState(JSON.parse(localStorage.getItem("items")) || null)
 
     const [ownerTelegramUserID, setOwnerTelegramUserID] = useState()
 
     useEffect(() => {
-        onSnapshot(doc(db,"items",id),snapshot => {
-            setProductInfo({...snapshot.data(),id:snapshot.id})
-            document.title = `KVSP1 eMart | New Order | ${snapshot.data().itemName}`
-            onSnapshot(doc(db,"admins",snapshot.data().retailerEmail), adminSnapshot => {
-                setOwnerTelegramUserID(adminSnapshot.data().TelegramUserID)
-            })
+        let storage  = JSON.parse(localStorage.getItem("items"))
+        if(storage.length < 1){
+            navigate("/cart")
+            toast.error("Can't checkout with no items in the cart!",{toastId:"noItems"})
+        }
+        onSnapshot(doc(db,"admins","zahidi85543@gmail.com"), adminSnapshot => {
+            setOwnerTelegramUserID(adminSnapshot.data().TelegramUserID)
         })
     },[])
 
@@ -50,7 +38,7 @@ export const NewOrder= () => {
 
         if(orderData.ordererName === ""){
             setNameError(true)
-            toast.error("You must provide your name",{autoClose:2000})
+            toast.error("You must provide your name",{autoClose:2000,toastId:"provideName"})
             return
         }else{
             setNameError(false)
@@ -59,34 +47,14 @@ export const NewOrder= () => {
         if(orderData.ordererPhone === "" || /[a-zA-Z]/g.test(orderData.ordererPhone)){
             setPhoneError(true)
             if(orderData.ordererPhone === ""){
-                toast.error("You must provide your phone number",{autoClose:2000})
+                toast.error("You must provide your phone number",{autoClose:2000,toastId:"provideNumber"})
 
             }else if(/[a-zA-Z]/g.test(orderData.ordererPhone)){
-                toast.error("Phone number must be numbers",{autoClose:2000})
+                toast.error("Phone number must be numbers",{autoClose:2000,toastId:"numbersOnly"})
             }
             return
         }else{
             setPhoneError(false)
-        }
-
-        if(orderData.orderDescription === ""){
-            setDescriptionError(true)
-            toast.error("You must provide an order description",{autoClose:2000})
-            return
-        }else{
-            setDescriptionError(false)
-        }
-
-        if(orderData.quantity === ""){
-            setQuantityError(true)
-            toast.error("You must set a quantity",{autoClose:2000})
-            return
-        }else if(parseInt(orderData.quantity) <= 0){
-            setQuantityError(true)
-            toast.error("Quantity cannot be 0",{autoClose:2000})
-            return
-        }else{
-            setQuantityError(false)
         }
 
         newOrder()
@@ -95,20 +63,23 @@ export const NewOrder= () => {
 
     const newOrder = async() => {
         const msg = `
-        <b>NEW ORDER</b>\n
+        <b>**NEW ORDER**</b>\n
 <b>CUSTOMER INFORMATION</b>
 Customer Name: ${orderData.ordererName}
 Customer Phone: <a href="tel:${orderData.ordererPhone}">${orderData.ordererPhone}</a>
 
-<b>ORDERED PRODUCT</b>
-Product Name: ${productInfo.itemName}
-Product Price: RM ${productInfo.itemPrice}
-Quantity: ${orderData.quantity}
-Product ID: ${productInfo.id}
-Product Image: <a href='${productInfo.itemImage}'>Image Link</a>
+<b>ORDER INFORMATION</b>
+${items.map((item,i) =>
+`
+<b>ITEM ${i+1}</b>
+Item Name: <b>${item.itemName}</b>
+Item ID: ${item.id}
+Quantity: <b>${item.quantity}</b>
+Price per Unit: <b>RM${item.itemPrice}</b>
+`
+).join("")}
 
-<b>ORDER DESCRIPTION</b>
-${orderData.orderDescription}
+TOTAL PRICE: <b>${items && items.length > 0 && items.reduce((a, b) => ((Number(a.itemPrice)*a.quantity) + Number(b.itemPrice)*b.quantity).toFixed(2))}</b>
         `
 
         const url = `https://api.telegram.org/bot5838916312:AAG8mXHScIh7o2bVJUvm_sDXYYL6GeUiMgM/sendMessage?chat_id=${ownerTelegramUserID}&text=${encodeURIComponent(msg)}&parse_mode=html`
@@ -118,24 +89,15 @@ ${orderData.orderDescription}
         })
         .then(() => {
             toast.success("Order has been sent")
-            navigate("/product/"+id)
+            navigate("/cart")
+            let empty = []
+            localStorage.setItem("items",JSON.stringify(empty))
+
         })
     }
 
-
     return (
         <div className="flex items-center flex-col ui-page py-5">
-            <h1 className="text-3xl font-bold text-white text-center">
-                New Order of
-                <br/>
-                {productInfo.itemName}
-            </h1>
-            <br/>
-            <LazyLoadImage
-                src={productInfo.itemImage}
-                style={{height:"100px"}}
-                alt={productInfo.itemName}
-            />
             <br/>
             <form noValidate onSubmit={e => handleSubmit(e)} className="bg-white w-11/12 lg:w-3/5 rounded p-3">
                 <h2 className="text-xl font-bold mb-3">Personal Information</h2>
@@ -168,35 +130,35 @@ ${orderData.orderDescription}
                 <br/><br/>
 
                 <h2 className="text-xl font-bold mb-3">Order Information</h2>
-                <TextField 
-                    onChange={(e) => setOrderData({...orderData,orderDescription:e.target.value})} 
-                    value={orderData.orderDescription} 
-                    fullWidth
-                    multiline 
-                    label="Order Description"
-                    variant="filled"
-                    maxRows={5}
-                    className="text-justify"
-                    required
-                    error={descriptionError}
-                    helperText={"When will you pick up the item? What time? What day?"}
-                />
-                <br/><br/>
-
-                <TextField
-                    onChange={(e) => setOrderData({...orderData,quantity:e.target.value})} 
-                    value={orderData.quantity} 
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} 
-                    label="Order Quantity"
-                    variant="filled"
-                    helperText="Must be a number"
-                    required
-                    error={quantityError}
-                    type="number"
-                />
-                <br/><br/>
-
-                
+                {items && items.length > 0 && items.map((item,i) => {
+                    return (
+                        <div key={i} className="flex items-center justify-between mb-4 gap-2">
+                            <div className="flex items-center gap-2">
+                                <LazyLoadImage
+                                    style={{maxWidth:"60px"}}
+                                    src={item.itemImage}
+                                    alt={item.itemName}
+                                />
+                                <div className="flex flex-col justify-center">
+                                    {item.itemName}<br/>
+                                    <span className="text-gray-400 text-xs">{item.id}</span>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 flex-col-reverse sm:flex-row">
+                                <span>x{item.quantity}</span>
+                                <span>RM{(item.itemPrice*item.quantity).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    )
+                })}
+                <br/>
+                <div className="flex justify-end">
+                    <h2 className="text-lg font-bold mb-3">
+                        {items && items.length > 0 && items.reduce((a, b) => ((Number(a.quantity)) + Number(b.quantity)))} Items |
+                        RM{items && items.length > 0 && items.reduce((a, b) => ((Number(a.itemPrice)*a.quantity) + Number(b.itemPrice)*b.quantity).toFixed(2))}
+                    </h2>
+                </div>
+                <br/>
                 <Button style={{float:"right"}} type="submit" variant="contained">ORDER</Button>
             </form>
         </div>

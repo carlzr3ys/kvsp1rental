@@ -76,6 +76,7 @@ export const AddItem = () => {
     const addItem = async() => {
         const docRef = await addDoc(collection(db,"items"),{
             ...itemData,
+            itemPrice:Number(itemData.itemPrice),
             createdAt:serverTimestamp(),
             itemDescription:itemData.itemDescription?itemData.itemDescription:"No description",
             itemImage:itemData.itemImage?itemData.itemImage:"https://via.placeholder.com/320x320?text=No+Image"

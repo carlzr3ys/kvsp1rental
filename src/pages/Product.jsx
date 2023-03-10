@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { auth, db } from "../firebase"
-import { onSnapshot, doc } from "firebase/firestore"
+import { onSnapshot, doc, updateDoc } from "firebase/firestore"
 import { useEffect, useState, useContext } from "react"
 import { toast } from "react-toastify"
 import { useNavigate, Link } from "react-router-dom"
@@ -51,15 +51,17 @@ export const Product = () => {
         }
     },[])
 
-    const handleOrder = () => {
+    const handleOrder = async() => {
         let storage = JSON.parse(localStorage.getItem("items"))
         let newstorage
         if(!storage){
-            newstorage = [{...productInfo,quantity:1}]
+            newstorage = [{...productInfo,quantity:1,itemOrders:productInfo.itemOrders+1}]
         }else{
-            newstorage = [...storage,{...productInfo,quantity:1}]
+            newstorage = [...storage,{...productInfo,quantity:1,itemOrders:productInfo.itemOrders+1}]
         }
-        
+        await updateDoc(doc(db,"items",id),{
+            itemOrders:productInfo.itemOrders+1
+        })
         localStorage.setItem("items",JSON.stringify(newstorage))
         setAdded(true)
     }

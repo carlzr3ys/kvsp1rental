@@ -84,7 +84,7 @@ function App() {
                 <Route path="/editprofile/:email" element={<EditProfile/>}/>
                 <Route path="/product/:id" element={<Product/>}/>
                 <Route path="/editproduct/:id" element={<EditProduct/>}/>
-                <Route path="/neworder/:id" element={<NewOrder/>}/>
+                <Route path="/neworder" element={<NewOrder/>}/>
                 <Route path="/category/:category" element={<Category/>}/>
                 <Route path="/search/:searchQuery" element={<Search/>}/>
                 <Route path="/products" element={<Products/>}/>

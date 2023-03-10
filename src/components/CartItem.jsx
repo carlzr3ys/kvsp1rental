@@ -2,6 +2,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify"
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
  
 export const CartItem = (props) => {
 
@@ -13,7 +15,7 @@ export const CartItem = (props) => {
         navigate("/product/"+info.id)
     }
 
-    const putBack = () => {
+    const putBack = async() => {
         let items = JSON.parse(localStorage.getItem("items"))
         let obji = items.findIndex(item => item.id === info.id)
 
@@ -27,6 +29,9 @@ export const CartItem = (props) => {
             setQuantity(quantity-1)
         }else{
             items.splice(obji,1)
+            await updateDoc(doc(db,"items",info.id),{
+                itemOrders:info.itemOrders-1
+            })
             setItems(items)
             toast.info(`${info.itemName} removed from cart`,{
                 autoClose:2500
