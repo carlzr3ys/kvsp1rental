@@ -1,9 +1,9 @@
 export const Footer = () => {
     return (
         <footer className="py-6">
-            <p className="text-zinc-400 text-xs text-center">
-                Copyright &copy; 2023 ZumTheZazaKing
+            <p className="text-black-400 text-xs text-center font-bold">
+                Copyright &copy; 2024 CarlZr3y
             </p>
         </footer>
-    )
+    );
 }

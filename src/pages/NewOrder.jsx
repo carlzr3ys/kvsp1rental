@@ -18,6 +18,8 @@ export const NewOrder = () => {
         ordererPhone:"",
     })
     const [items,setItems] = useState(JSON.parse(localStorage.getItem("items")) || null)
+    const [quantity,setQuantity] = useState(0)
+    const [totalPrice,setTotalPrice] = useState(0)
 
     const [ownerTelegramUserID, setOwnerTelegramUserID] = useState()
 
@@ -27,10 +29,28 @@ export const NewOrder = () => {
             navigate("/cart")
             toast.error("Can't checkout with no items in the cart!",{toastId:"noItems"})
         }
-        onSnapshot(doc(db,"admins","zahidi85543@gmail.com"), adminSnapshot => {
+        onSnapshot(doc(db,"admins","mathaikallkhuzairee@gmail.com"), adminSnapshot => {
             setOwnerTelegramUserID(adminSnapshot.data().TelegramUserID)
         })
     },[])
+
+    useEffect(()=>{
+
+        let tempQuantity = 0
+        for(let i=0;i<items.length;i++){
+            tempQuantity += items[i].quantity
+        }
+
+        let tempTotal = 0
+        for(let i=0;i<items.length;i++){
+            tempTotal += (items[i].itemPrice*items[i].quantity)
+        }
+
+        console.log(tempQuantity, tempTotal)
+
+        setQuantity(tempQuantity)
+        setTotalPrice(tempTotal)
+    },[items])
 
 
     const handleSubmit = (e) => {
@@ -69,7 +89,7 @@ Customer Name: ${orderData.ordererName}
 Customer Phone: <a href="tel:${orderData.ordererPhone}">${orderData.ordererPhone}</a>
 
 <b>ORDER INFORMATION</b>
-${items.map((item,i) =>
+${items.map((item,i) => 
 `
 <b>ITEM ${i+1}</b>
 Item Name: <b>${item.itemName}</b>
@@ -79,7 +99,7 @@ Price per Unit: <b>RM${item.itemPrice}</b>
 `
 ).join("")}
 
-TOTAL PRICE: <b>${items && items.length > 0 && items.reduce((a, b) => ((Number(a.itemPrice)*a.quantity) + Number(b.itemPrice)*b.quantity).toFixed(2))}</b>
+TOTAL PRICE: <b>RM${totalPrice}</b>
         `
 
         const url = `https://api.telegram.org/bot5838916312:AAG8mXHScIh7o2bVJUvm_sDXYYL6GeUiMgM/sendMessage?chat_id=${ownerTelegramUserID}&text=${encodeURIComponent(msg)}&parse_mode=html`
@@ -154,8 +174,8 @@ TOTAL PRICE: <b>${items && items.length > 0 && items.reduce((a, b) => ((Number(a
                 <br/>
                 <div className="flex justify-end">
                     <h2 className="text-lg font-bold mb-3">
-                        {items && items.length > 0 && items.reduce((a, b) => ((Number(a.quantity)) + Number(b.quantity)))} Items |
-                        RM{items && items.length > 0 && items.reduce((a, b) => ((Number(a.itemPrice)*a.quantity) + Number(b.itemPrice)*b.quantity).toFixed(2))}
+                        {quantity} Items |
+                        RM {totalPrice}
                     </h2>
                 </div>
                 <br/>

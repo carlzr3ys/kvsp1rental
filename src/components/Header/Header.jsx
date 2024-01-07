@@ -76,7 +76,7 @@ export const Header = () => {
 
     return (
         <div>
-            <header className="bg-zinc-400 p-4 shadow-xl flex justify-between items-center">
+            <header className="bg-white-400 p-4 shadow-xl flex justify-between items-center">
                 <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 E-Mart</h1>
                 <div className="flex items-center">
                     <div className="hidden sm:block">

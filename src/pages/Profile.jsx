@@ -23,7 +23,7 @@ export const Profile = () => {
             navigate("/")
           }else{
             setProfileData({...snapshot.data()})
-            document.title = `KVSP1 eMart | ${snapshot.data().Username}`
+            document.title = `KVSP1 eVendor | ${snapshot.data().Username}`
           }
         })
 

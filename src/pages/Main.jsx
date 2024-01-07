@@ -18,7 +18,7 @@ export const Main = () => {
     useEffect(() => {
         getLatest()
         getHottest()
-        document.title = "KVSP1 eMart | Home"
+        document.title = "KVSP1 E-Mart | Home"
     },[])
 
     const getLatest = async() => {
@@ -74,7 +74,7 @@ export const Main = () => {
             </div>
             <br/>
             <div>
-                <h1 className="text-white text-3xl font-bold">Latest</h1>
+                <h1 className="text-black text-3xl font-bold">Latest</h1>
                 <br/>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                     {latestProducts.length > 0 ?
@@ -86,7 +86,7 @@ export const Main = () => {
             </div>
             <br/><br/>
             <div>
-                <h1 className="text-white text-3xl font-bold">Hottest</h1>
+                <h1 className="text-black text-3xl font-bold">Hottest</h1>
                 <br/>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                     {latestProducts.length > 0 ?

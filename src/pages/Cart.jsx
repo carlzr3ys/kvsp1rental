@@ -10,7 +10,7 @@ export const Cart = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        document.title = "KVSP1 | Cart"
+        document.title = "KVSP1 E-Mart | Cart"
     },[])
 
     const checkout = () => {
@@ -19,7 +19,7 @@ export const Cart = () => {
 
     return (
         <div className="p-6">
-            <h1 className="text-3xl font-bold text-white">Cart</h1>
+            <h1 className="text-3xl font-bold text-black">Cart</h1>
             {items && items.length > 0 ?
                 <div>
                     <br/>
@@ -32,7 +32,7 @@ export const Cart = () => {
                     </div>
                 </div>
                 
-            : <p className="text-gray-400 text-lg">No items in the cart</p>}
+            : <p className="text-white-400 text-lg">No items in the cart</p>}
         </div>
     )
 }
