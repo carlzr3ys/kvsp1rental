@@ -27,7 +27,7 @@ export const Product = () => {
                 toast.error("Product with ID:'"+id+"' doesn't exist")
             }else{
                 setProductInfo({...snapshot.data(), id})
-                document.title = `KVSP1 eMart | ${snapshot.data().itemName}`
+                document.title = `KVSP1 FRS | ${snapshot.data().itemName}`
                 if(snapshot.data().itemStatus === "Available"){
                     setStatusColor("green")
                 }else if(snapshot.data().itemStatus === "Sold Out"){

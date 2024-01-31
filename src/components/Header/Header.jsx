@@ -77,25 +77,13 @@ export const Header = () => {
     return (
         <div>
             <header className="bg-white-400 p-4 shadow-xl flex justify-between items-center">
-                <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 E-Mart</h1>
+                <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 Field Reservation </h1>
                 <div className="flex items-center">
                     <div className="hidden sm:block">
                         <List row>
                             <ListItem title="Home">
                                 <ListItemButton onClick={() => navigate("/")}>
                                     <HomeIcon/>
-                                </ListItemButton>
-                            </ListItem>
-                            <ListDivider/>
-                            <ListItem title="Products">
-                                <ListItemButton onClick={() => navigate("/products")}>
-                                    <ShoppingBagIcon/>
-                                </ListItemButton>
-                            </ListItem>
-                            <ListDivider/>
-                            <ListItem title="Cart">
-                                <ListItemButton onClick={() => navigate("/cart")}>
-                                    <ShoppingCartIcon/>
                                 </ListItemButton>
                             </ListItem>
                         </List>

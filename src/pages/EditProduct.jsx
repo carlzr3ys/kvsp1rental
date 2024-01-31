@@ -52,7 +52,7 @@ export const EditProduct = () => {
         if(!user){
             navigate("/")
         }
-        document.title = `KVSP1 eMart | Edit Product | ${id}`
+        document.title = `KVSP1 FRS | Edit Product | ${id}`
         onSnapshot(doc(db,"items",id),snapshot => {
             const data = snapshot.data()
             setItemData({

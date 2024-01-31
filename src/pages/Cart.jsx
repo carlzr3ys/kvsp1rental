@@ -10,7 +10,7 @@ export const Cart = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        document.title = "KVSP1 E-Mart | Cart"
+        document.title = "KVSP1 FRS | Cart"
     },[])
 
     const checkout = () => {

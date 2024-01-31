@@ -43,7 +43,7 @@ export const EditProfile = () => {
                 }
             })
         }
-        document.title = `KVSP1 eMart | Edit Profile | ${email}`
+        document.title = `KVSP1 FRS | Edit Profile | ${email}`
       },[email])
 
     useEffect(()=>{
@@ -119,7 +119,7 @@ export const EditProfile = () => {
 
     return (
         <div className="flex items-center flex-col ui-page py-5">
-            <h1 className="text-3xl font-bold text-white">Edit Profile</h1>
+            <h1 className="text-3xl font-bold text-black">Edit Profile</h1>
             <br/>
             <form noValidate onSubmit={e => handleSubmit(e)} className="bg-white w-11/12 lg:w-3/5 rounded p-3">
                 <TextField 
@@ -172,7 +172,7 @@ export const EditProfile = () => {
                 <br/>
                 {profileData.Image === "" || profileData.Image === auth.currentUser.photoURL?
                 "" : <div className="flex items-center justify-center"><Button onClick={resetImage} className="mx-auto" variant="contained" color="error">Reset Image</Button><br/><br/></div>}
-                <Button style={{float:"right"}} type="submit" variant="contained">EDIT</Button>
+                <Button style={{float:"right"}} type="submit" variant="contained">SAVE</Button>
             </form>
         </div>
     )

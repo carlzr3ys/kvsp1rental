@@ -13,7 +13,7 @@ export const Category = () => {
 
     useEffect(() => {
         getFirstBatch()
-        document.title = `KVSP1 eMart | ${category}`
+        document.title = `KVSP1 FRS | ${category}`
     },[])
 
     const getFirstBatch = async() => {

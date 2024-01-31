@@ -8,7 +8,7 @@ export const Products = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        document.title = "KVSP1 | Products"
+        document.title = "KVSP1 FRS | Products"
     },[])
 
     return (
