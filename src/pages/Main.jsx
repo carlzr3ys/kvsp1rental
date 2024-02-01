@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
 import { db, storage } from '../firebase';
 import { toast } from 'react-toastify';
 import { ref, listAll, getDownloadURL } from 'firebase/storage'
@@ -18,6 +18,16 @@ export const Main = () => {
 
     const listRef = ref(storage,'carouselImages')
     const [images,setImages] = useState([])
+    const [dateErr,setDateErr] = useState(false)
+
+    let [listOfSesi,setListOfSesi] = useState([
+        {text:"Pagi",value:"pagi"},
+        {text:"Petang",value:"petang"}
+    ])
+    let [listOfJenis,setListJenis] = useState([
+        {text:"Padang Bola",value:"padang_bola"},
+        {text:"Sewa Padang",value:"sewa_padang"}
+    ])
 
     useEffect(()=>{
         let temp = []
@@ -37,6 +47,7 @@ export const Main = () => {
         nama:"",
         tel:"",
         desc:"",
+        date:"",
         jenis:"",
         sesi:"",
         tujuan:""
@@ -45,16 +56,54 @@ export const Main = () => {
         nama:"",
         tel:"",
         desc:"",
+        date:"",
         jenis:"",
         sesi:"",
         tujuan:""
     }
 
+    const onDateChange = async(e) => {
+        let value = e.target.value
+        let querySnapshot = await getDocs(collection(db,'orders'))
+        setListJenis([
+            {text:"Padang Bola",value:"padang_bola"},
+            {text:"Sewa Padang",value:"sewa_padang"}
+        ])
+        setListOfSesi([
+            {text:"Pagi",value:"pagi"},
+            {text:"Petang",value:"petang"}
+        ])
+        setDateErr(false)
+        let listOfSesiPlus = []
+        querySnapshot.forEach(doc => {
+            if(doc.data().date != undefined){
+                if(doc.data().date == value){
+                    if(doc.data().jenis == "sewa_padang"){
+                        return setDateErr(true)
+                    }else{
+                        listOfSesiPlus.push(doc.data().sesi)
+                        setListJenis([{text:"Padang Bola",value:"padang_bola"}])
+                        if(doc.data().sesi == "pagi"){
+                            setListOfSesi([{text:"Petang",value:"petang"}])
+                        }else{
+                            setListOfSesi([{text:"Pagi",value:"pagi"}])
+                        }
+                        if(listOfSesiPlus.includes("pagi") && listOfSesiPlus.includes("petang")){
+                            setDateErr(true)
+                        }
+                    }
+                }
+            }
+        })
+        setInfo({...info,date:value})
+    }
+
     const membuatTempahan = async() => {
 
-        if(info.nama.trim()===""||info.tel.trim===""||info.desc.trim()===""||info.jenis===""||info.tujuan.trim()===""){
+        if(info.nama.trim()===""||info.tel.trim===""||info.desc.trim()===""||info.date===""||info.jenis===""||info.tujuan.trim()===""){
             return toast.warn('Fill in all fields')
         }
+        if(dateErr)return toast.error("Date already taken")
         if(info.jenis==="padang_bola" && info.sesi === "")return toast.warn('Pilih satu sesi')
 
         const docRef = await addDoc(collection(db,'orders'),{
@@ -105,6 +154,8 @@ export const Main = () => {
                         </p>
                     </div>
                 </div>
+                <p className='font-bold'>Tarikh</p>
+                <TextField error={dateErr} helperText={dateErr?'Tarikh sudah diambil':''} value={info.date} onChange={e=>onDateChange(e)} type='date' className='w-full' variant='filled'/>
                 <FormControl>
                     <InputLabel id="jenis-label">Jenis</InputLabel> 
                     <Select
@@ -114,8 +165,9 @@ export const Main = () => {
                         value={info.jenis} 
                         onChange={e=>setInfo({...info,jenis:e.target.value})}
                     >
-                        <MenuItem value="padang_bola">Padang Bola</MenuItem>
-                        <MenuItem value="sewa_padang">Sewa Padang</MenuItem>
+                        {listOfJenis.map((jenis,i) => 
+                            <MenuItem key={i} value={jenis.value}>{jenis.text}</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
                 {info.jenis === "padang_bola" ?
@@ -128,8 +180,9 @@ export const Main = () => {
                             value={info.sesi}
                             onChange={e=>setInfo({...info,sesi:e.target.value})}
                         >
-                            <MenuItem value="pagi">Pagi</MenuItem>
-                            <MenuItem value="petang">Petang</MenuItem>
+                            {listOfSesi.map((sesi,i)=>
+                                <MenuItem key={i} value={sesi.value}>{sesi.text}</MenuItem>
+                            )}
                         </Select>
                     </FormControl>
                 :""}
