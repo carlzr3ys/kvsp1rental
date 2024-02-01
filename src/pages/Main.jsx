@@ -112,22 +112,44 @@ export const Main = () => {
         .catch(err => toast.error('Failed to add item:\n' + err.message), {autoClose:5000})
     
         if(docRef){
-            toast.success("Tempahan sudah dihantar")
-            setInfo({...defaultInfo})
+            const msg = `
+        <b>TEMPAHAN BAHARU</b>\n
+<b>MAKLUMAT PENYEWA</b>
+<b>Nama</b>: ${info.nama}
+<b>No.Tel</b>: <a href="tel:${info.tel}">${info.tel}</a>
+<b>Maklumat Diri</b>:
+${info.desc}
+
+<b>TEMPAHAN</b>
+<b>Tarikh</b>: ${info.date}
+<b>Jenis</b>: ${info.jenis}
+${info.jenis === "padang_bola" ? `<b>Sesi</b>: ${info.sesi}` : `<b>Tujuan</b>: ${info.tujuan}`}
+${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
+
+`
+            const url = `https://api.telegram.org/bot6624374972:AAGIpLwKN6TNlJ3U90vN0gf0cVS3uM9U200/sendMessage?chat_id=${1081924481}&text=${encodeURIComponent(msg)}&parse_mode=html`
+            fetch(url)
+            .then(() => {
+                toast.success("Tempahan sudah dihantar")
+                setInfo({...defaultInfo})
+            })
         }
+
     }
 
     return (
         <div className="p-6 flex flex-col gap-6">
-            <Carousel className=''>
-                {images && images.map((url,i) => {
-                    return (
-                        <div className='h-[30vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]' key={i}>
-                            <img src={url} alt="" className='w-full h-full'/>
-                        </div>
-                    )
-                })}
-            </Carousel>
+            <div className='md: lg:w-3/4 mx-auto'>
+                <Carousel infiniteLoop>
+                    {images ? images.map((url,i) => {
+                        return (
+                            <div className='max-h-[70vh]' key={i}>
+                                <img src={url} alt="" className='w-full h-full'/>
+                            </div>
+                        )
+                    }):""}
+                </Carousel>
+            </div>
             <h1 className='text-center font-bold text-2xl'>PADANG KOLEJ VOKASIONAL SUNGAI PETANI 1</h1>
             <div className='bg-white p-4 lg:px-6 rounded-md lg:w-[70%] mx-auto flex flex-col gap-4'>
                 <h2 className='font-bold mb-2'>MAKLUMAT PENYEWA</h2>
