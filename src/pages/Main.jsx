@@ -10,7 +10,7 @@ import Button from '@mui/material/Button'
 import { addDoc, collection } from 'firebase/firestore'
 import { db, storage } from '../firebase';
 import { toast } from 'react-toastify';
-import { ref, listAll, getDownloadURL, list } from 'firebase/storage'
+import { ref, listAll, getDownloadURL } from 'firebase/storage'
 
 export const Main = () => {
 
@@ -92,16 +92,16 @@ export const Main = () => {
                     <div>
                         <h2 className='font-bold'>Padang Bola</h2>
                         <p>
-                            Harga sewa adalah RM80 setiap sesi, dan pilihan sesi terdiri daripada pagi dan petang. 
-                            Sesi ini boleh dinikmati pada hari Jumaat, Sabtu, dan juga pada hari-hari cuti yang lain.                   
+                            Harga sewa adalah RM80 setiap sesi, dan pilihan sesi terdiri daripada pagi dan petang. (Hari Jumaat, Sabtu, dan juga pada hari-hari cuti yang lain sahaja)                   
                         </p>
                     </div>
                     
                     <div>
                         <h2 className='font-bold'>Sewa Padang</h2>
                         <p>
-                            Bagi yang ingin menyewa padang untuk pelbagai acara atau aktiviti sukan, kami menawarkan 
-                            Harga sewa antara RM200 hingga RM300 sehingga tamat program tersebut. 
+                            Bagi yang ingin menyewa padang untuk pelbagai acara atau aktiviti sukan, kami menawarkan Harga sewa antara RM200 hingga RM300 sehingga tamat program. Sila
+                            nyatakan di "tujuan" berapa hari acara/sukan tersebut akan berlangsung
+                            (Hari Jumaat, Sabtu, dan juga pada hari-hari cuti yang lain sahaja)
                         </p>
                     </div>
                 </div>
