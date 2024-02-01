@@ -119,12 +119,11 @@ export const Main = () => {
 
     return (
         <div className="p-6 flex flex-col gap-6">
-            <Carousel>
+            <Carousel className=''>
                 {images && images.map((url,i) => {
                     return (
-                        <div key={i}>
-                            <img src={url} alt=""/>
-                            <p className="legend">Image {i+1}</p>
+                        <div className='h-[30vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]' key={i}>
+                            <img src={url} alt="" className='w-full h-full'/>
                         </div>
                     )
                 })}
