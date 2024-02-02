@@ -21,6 +21,8 @@ const Category = lazy(() => import("./pages/Category").then(module => ({default:
 const Search = lazy(() => import('./pages/Search').then(module => ({default:module.Search})))
 const Products = lazy(() => import('./pages/Products').then(module => ({default:module.Products})))
 const Cart = lazy(() => import('./pages/Cart').then(module => ({default:module.Cart})))
+const Admin = lazy(() => import('./pages/Admin').then(module => ({default:module.Admin})))
+const AdminLogin = lazy(() => import('./pages/AdminLogin').then(module => ({default:module.AdminLogin})))
 
 function App() {
 
@@ -48,16 +50,6 @@ function App() {
       }
     })
   },[user])
-
-  useEffect(()=>{
-    if(loading){
-      toast.info("Initializing User...",{
-        autoClose:1250,
-        pauseOnHover:false,
-        toastId:"initialUser"
-      })
-    }
-  },[loading])
 
   const checkUserProperties = async(data) => {
     let dataToInsert = {}
@@ -89,6 +81,8 @@ function App() {
                 <Route path="/search/:searchQuery" element={<Search/>}/>
                 <Route path="/products" element={<Products/>}/>
                 <Route path="/cart" element={<Cart/>}/>
+                <Route path="/admin" element={<Admin/>}/>
+                <Route path='/login' element={<AdminLogin/>}/>
 
               </Routes>
               <ToastContainer

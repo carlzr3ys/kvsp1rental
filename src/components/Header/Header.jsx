@@ -30,6 +30,11 @@ export const Header = () => {
     const { user, loading } = useContext(Context)
     const [profileData, setProfileData] = useState({})
     const [menuPosition, setMenuPosition] = useState("-100vw")
+    const [loggedIn,setLoggedIn] = useState()
+
+    useEffect(()=>{
+        setLoggedIn(localStorage.getItem('loggedIn') || false)
+    })
 
     useEffect(()=>{
         if(!user)return
@@ -74,11 +79,18 @@ export const Header = () => {
         setMenuPosition("-100vw")
     }
 
+    const logout = () => {
+        localStorage.clear()
+        navigate('/')
+    }
+
     return (
         <div>
             <header className="bg-white-400 p-4 shadow-xl flex justify-between items-center">
                 <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 Field Reservation </h1>
-                <div className="flex items-center">
+                {loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : ""}
+            </header>
+                {/*<div className="flex items-center">
                     <div className="hidden sm:block">
                         <List row>
                             <ListItem title="Home">
@@ -168,7 +180,7 @@ export const Header = () => {
                         </ListItemButton>
                     </ListItem>
                 </List>
-            </div>
+                    </div>-->*/}
         </div>
     )
 }
