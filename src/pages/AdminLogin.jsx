@@ -33,7 +33,7 @@ export const AdminLogin = () => {
                 if(password === doc.data().password){
                     localStorage.setItem('loggedIn',true)
                     navigate('/admin')
-                    return toast.success('Logged in as Admin')
+                    return toast.success('Logged in as Admin',{toastId:"admin_success"})
                 }
             }
             count++;
