@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
 import { storage, db } from "../firebase"
+import { onSnapshot, collection, doc, deleteDoc, query, orderBy } from 'firebase/firestore'
 import { ref, listAll, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage'
 import { toast } from "react-toastify"
 import ClearIcon from '@mui/icons-material/Clear';
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 export const Admin = () => {
 
@@ -13,6 +16,7 @@ export const Admin = () => {
 
     const navigate = useNavigate()
     const [images,setImages] = useState([])
+    const [orders,setOrders] = useState([])
     const listRef = ref(storage,'carouselImages')
     const loggedIn = localStorage.getItem("loggedIn") || false
 
@@ -33,6 +37,18 @@ export const Admin = () => {
                    setImages([...temp])
                 })
             });
+        })
+    },[])
+
+    useEffect(()=>{
+
+        
+        onSnapshot(query(collection(db,'orders'),orderBy("date")),querySnapshot => {
+            let temp = []
+            querySnapshot.forEach(doc => {
+                temp.push({...doc.data(),id:doc.id})
+                setOrders([...temp])
+            })
         })
     },[])
 
@@ -74,6 +90,17 @@ export const Admin = () => {
         }
     }
 
+    const deleteTempahan = async(id) => {
+        // eslint-disable-next-line no-restricted-globals
+        if(confirm("Adakah anda mahu memadam tempahan ini?")){
+            await deleteDoc(doc(db,'orders',id))
+            .then(()=>{
+                toast.success("Tempahan berjaya dipadam")
+            })
+            .catch(err=>toast.error("Tempahan gagal dipadam:\n"+err))
+        }
+    }
+
     return (
         <div className='admin p-6'>
             <h1 className="text-2xl mb-4 font-bold text-center">Admin KVSP1 FRS</h1>
@@ -95,6 +122,36 @@ export const Admin = () => {
                 <label htmlFor="fileInput">
                     <p className="bg-green-500 text-white px-4 py-2 rounded-md w-full text-center cursor-pointer">+ ADD IMAGE</p>
                 </label>
+
+                <h2 className="text-xl font-bold mt-2">Orders</h2>
+                <div className="flex flex-col gap-3">
+                    {orders && orders.map((order,i)=>
+                        <div className="tempahan flex flex-col lg:flex-row gap-2 bg-gray-200 px-4 py-2 rounded-md" key={i}>
+                            <div className="flex flex-col lg:flex-[1]">
+                                <h2 className="font-bold">TEMPAHAN</h2>
+                                <p><b>Tarikh:</b> {new Date(order.date).toLocaleDateString()}</p>
+                                <p><b>Jenis:</b> {order.jenis === 'padang_bola' ? "Padang Bola":"Sewa Padang"}</p>
+                                {order.sesi ?
+                                    <p><b>Sesi:</b> {order.sesi === 'pagi' ? "Pagi":"Petang"}</p>
+                                    :
+                                    <p><b>Tujuan:</b><br/> {order.tujuan}</p>
+                                }
+                                {order.sesi ? <p><b>Tujuan:</b><br/> {order.tujuan}</p> : ""}
+                            </div>
+                            <div className="flex flex-col lg:flex-[1]">
+                                <h2 className="font-bold">MAKLUMAT PENYEWA</h2>
+                                <p><b>Nama:</b> {order.nama}</p>
+                                <p><b>No. Tel:</b> {order.tel}</p>
+                                <p><b>Butiran Diri:</b><br/> {order.desc}</p>
+                            </div>
+                            <div className="options">
+                                <IconButton onClick={()=>deleteTempahan(order.id)} color="error">
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )

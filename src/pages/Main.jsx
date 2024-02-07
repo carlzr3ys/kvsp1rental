@@ -19,6 +19,7 @@ export const Main = () => {
     const listRef = ref(storage,'carouselImages')
     const [images,setImages] = useState([])
     const [dateErr,setDateErr] = useState(false)
+    const [canTempah,setCanTempah] = useState(true)
 
     let [listOfSesi,setListOfSesi] = useState([
         {text:"Pagi",value:"pagi"},
@@ -100,11 +101,14 @@ export const Main = () => {
 
     const membuatTempahan = async() => {
 
+        setCanTempah(false)
+
         if(info.nama.trim()===""||info.tel.trim===""||info.desc.trim()===""||info.date===""||info.jenis===""||info.tujuan.trim()===""){
+            setCanTempah(true)
             return toast.warn('Fill in all fields')
         }
-        if(dateErr)return toast.error("Date already taken")
-        if(info.jenis==="padang_bola" && info.sesi === "")return toast.warn('Pilih satu sesi')
+        if(dateErr){setCanTempah(true);return toast.error("Date already taken")}
+        if(info.jenis==="padang_bola" && info.sesi === ""){setCanTempah(true);return toast.warn('Pilih satu sesi')}
 
         const docRef = await addDoc(collection(db,'orders'),{
             ...info
@@ -131,6 +135,7 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
             fetch(url)
             .then(() => {
                 toast.success("Tempahan sudah dihantar")
+                setCanTempah(true)
                 setInfo({...defaultInfo})
             })
         }
@@ -209,7 +214,7 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
                 :""}
                 <TextField value={info.tujuan} onChange={e=>setInfo({...info,tujuan:e.target.value})} minRows={3} multiline className='w-full' label='Tujuan' variant='filled'/>
                 <div className='text-center py-4'>
-                    <Button onClick={membuatTempahan} className='w-fit mx-auto' color='primary' variant='contained'>TEMPAH</Button>
+                    <Button disabled={!canTempah} onClick={membuatTempahan} className='w-fit mx-auto' color='primary' variant='contained'>TEMPAH</Button>
                 </div>
             </div>
         </div>
