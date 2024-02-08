@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import TextField from '@mui/material/TextField';
@@ -20,6 +20,8 @@ export const Main = () => {
     const [images,setImages] = useState([])
     const [dateErr,setDateErr] = useState(false)
     const [canTempah,setCanTempah] = useState(true)
+
+    const loadToastRef = useRef(null)
 
     let [listOfSesi,setListOfSesi] = useState([
         {text:"Pagi",value:"pagi"},
@@ -107,7 +109,8 @@ export const Main = () => {
             setCanTempah(true)
             return toast.warn('Fill in all fields')
         }
-        if(dateErr){setCanTempah(true);return toast.error("Date already taken")}
+        if(dateErr){setCanTempah(true);return toast.error("Tarikh ini sudah ditempah")}
+        if(Date.now() > new Date(info.date).getTime()){setCanTempah(true);return toast.error("Tarikh ini sudah luput")}
         if(info.jenis==="padang_bola" && info.sesi === ""){setCanTempah(true);return toast.warn('Pilih satu sesi')}
 
         const docRef = await addDoc(collection(db,'orders'),{
@@ -126,17 +129,32 @@ ${info.desc}
 
 <b>TEMPAHAN</b>
 <b>Tarikh</b>: ${info.date}
-<b>Jenis</b>: ${info.jenis}
-${info.jenis === "padang_bola" ? `<b>Sesi</b>: ${info.sesi}` : `<b>Tujuan</b>: ${info.tujuan}`}
+<b>Jenis</b>: ${info.jenis === "padang_bola" ? "Padang Bola" : "Sewa Padang"}
+${info.jenis === "padang_bola" ? `<b>Sesi</b>: ${info.sesi === "pagi" ? "Pagi" : "Petang"}` : `<b>Tujuan</b>: ${info.tujuan}`}
 ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
 
 `
-            const url = `https://api.telegram.org/bot6624374972:AAGIpLwKN6TNlJ3U90vN0gf0cVS3uM9U200/sendMessage?chat_id=${1081924481}&text=${encodeURIComponent(msg)}&parse_mode=html`
-            fetch(url)
-            .then(() => {
-                toast.success("Tempahan sudah dihantar")
-                setCanTempah(true)
-                setInfo({...defaultInfo})
+            const admins = await getDocs(collection(db,"admins"))
+            let count = 0
+            admins.forEach(admin => {
+                const id = admin.data().TelegramUserID
+                fetch(`https://api.telegram.org/bot6624374972:AAGIpLwKN6TNlJ3U90vN0gf0cVS3uM9U200/sendMessage?chat_id=${id}&text=${encodeURIComponent(msg)}&parse_mode=html`)
+                .then(()=>{
+                    ++count
+                    if(count === admins.size){
+                        toast.done(loadToastRef.current);
+                        toast.success("Tempahan sudah dihantar")
+                        setCanTempah(true)
+                        setInfo({...defaultInfo})
+                    }else{
+                        let progress = count / admins.size
+                        if (loadToastRef.current === null) {
+                            loadToastRef.current = toast.info('Sedang membuat tempahan', { progress });
+                        } else {
+                            toast.update(loadToastRef.current, { progress });
+                        }
+                    }
+                })
             })
         }
 
