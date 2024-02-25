@@ -85,11 +85,15 @@ export const Header = () => {
     }
 
     return (
-        <div>
-            <header className="bg-white-400 p-4 shadow-xl flex justify-between items-center">
-                <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 Field Reservation </h1>
-                {loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : ""}
-            </header>
+    <div>
+        <header className="sticky top-0 left-0 right-0 bg-opacity-40 p-4 shadow-xl flex justify-between items-center z-10">
+            <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 Field Reservation</h1>
+            {loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : null}
+        </header>
+        {/* Content */}
+
+
+        
                 {/*<div className="flex items-center">
                     <div className="hidden sm:block">
                         <List row>

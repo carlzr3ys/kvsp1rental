@@ -28,8 +28,8 @@ export const Main = () => {
         {text:"Petang",value:"petang"}
     ])
     let [listOfJenis,setListJenis] = useState([
-        {text:"Padang Bola",value:"padang_bola"},
-        {text:"Sewa Padang",value:"sewa_padang"}
+        {text:"Sewa Padang Bola",value:"padang_bola"},
+        {text:"Sewa Keseluruhan Padang",value:"sewa_padang"}
     ])
 
     useEffect(()=>{
@@ -166,7 +166,7 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
                 <Carousel showThumbs={false} infiniteLoop>
                     {images ? images.map((url,i) => {
                         return (
-                            <div className='max-h-[70vh]'key={i}>
+                            <div className='w-full max-h-[70vh]'key={i}>
                                 <img src={url} alt="" className='w-full h-full'/>
                             </div>
                         )
@@ -210,26 +210,41 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
                     </div>
                 </div>
                 <p className='font-bold'>Tarikh *</p>
-                <TextField error={dateErr} helperText={dateErr?'Tarikh sudah diambil':''} value={info.date} onChange={e=>onDateChange(e)} type='date' className='w-full' variant='filled'/>
+                <TextField 
+                sx={{ backgroundColor: 'white', marginBottom: 2 }} 
+                error={dateErr} 
+                helperText={dateErr ? 'Tarikh sudah diambil' : ''} 
+                value={info.date} 
+                onChange={e => onDateChange(e)} 
+                type='date' 
+                className='w-full' 
+                variant='filled'/>
+
                 <FormControl>
                     <InputLabel id="jenis-label">Jenis *</InputLabel> 
                     <Select
-                        className='text-black'
+                         style={{ backgroundColor: 'white', width : "25vw"}}
+                        className ='text-black mb-4' 
                         label="Jenis"
                         labelId="jenis-label"
                         value={info.jenis} 
                         onChange={e=>setInfo({...info,jenis:e.target.value})}
+
                     >
+                        <br></br>
+                        
                         {listOfJenis.map((jenis,i) => 
                             <MenuItem key={i} value={jenis.value}>{jenis.text}</MenuItem>
                         )}
                     </Select>
                 </FormControl>
+                <br></br>
                 {info.jenis === "padang_bola" ?
-                    <FormControl>
+                   <FormControl>
                         <InputLabel id="sesi-label">Sesi</InputLabel> 
                         <Select
-                            className='text-black'
+                             style={{ backgroundColor: 'white' }}
+                            className='text-black mb-4'
                             label="Sesi"
                             labelId="sesi-label"
                             value={info.sesi}
@@ -241,8 +256,8 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
                         </Select>
                     </FormControl>
                 :""}
-                <TextField value={info.tujuan} onChange={e=>setInfo({...info,tujuan:e.target.value})} minRows={3} multiline className='w-full' label='Tujuan' variant='filled'/>
-                <div className='text-center py-4'>
+                <TextField sx={{ backgroundColor: 'white'}} value={info.tujuan} onChange={e=>setInfo({...info,tujuan:e.target.value})} minRows={3} multiline className='w-full' label='Tujuan' variant='filled'/>
+                <div  className='text-center py-4'>
                     <Button disabled={!canTempah} onClick={membuatTempahan} className='w-fit mx-auto' color='primary' variant='contained'>TEMPAH</Button>
                 </div>
             </div>
