@@ -163,45 +163,56 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
     return (
         <div className="p-6 flex flex-col gap-6">
             <div className='md: lg:w-3/4 mx-auto'>
-                <Carousel infiniteLoop>
+                <Carousel showThumbs={false} infiniteLoop>
                     {images ? images.map((url,i) => {
                         return (
-                            <div className='max-h-[70vh]' key={i}>
+                            <div className='max-h-[70vh]'key={i}>
                                 <img src={url} alt="" className='w-full h-full'/>
                             </div>
                         )
                     }):""}
                 </Carousel>
             </div>
-            <h1 className='text-center font-bold text-2xl'>PADANG KOLEJ VOKASIONAL SUNGAI PETANI 1</h1>
-            <div className='bg-white p-4 lg:px-6 rounded-md lg:w-[70%] mx-auto flex flex-col gap-4'>
+        
+            <div>
                 <h2 className='font-bold mb-2'>MAKLUMAT PENYEWA</h2>
-                <TextField value={info.nama} onChange={e=>setInfo({...info,nama:e.target.value})} className='w-full' label='Nama' variant='filled'/>
-                <TextField value={info.tel} onChange={e=>setInfo({...info,tel:e.target.value})} className='w-full' label='No. Telefon' variant='filled'/>
-                <TextField value={info.desc} onChange={e=>setInfo({...info,desc:e.target.value})} minRows={3} multiline className='w-full' label='Maklumat Diri' variant='filled'/>
+               
+                <TextField sx={{ backgroundColor: 'white', marginBottom: '1rem' }} value={info.nama} onChange={e => setInfo({ ...info, nama: e.target.value })} className='w-full' label='Nama*' variant='filled'/>
+                <TextField sx={{ backgroundColor: 'white', marginBottom: '1rem' }} value={info.tel} onChange={e => setInfo({ ...info, tel: e.target.value })} className='w-full' label='No. Telefon*' variant='filled'/>
+                <TextField sx={{ backgroundColor: 'white', marginBottom: '1rem' }} value={info.desc} onChange={e => setInfo({ ...info, desc: e.target.value })} minRows={3} multiline className='w-full' label='Maklumat Diri*' variant='filled'/>
+
+
                 
                 <h2 className='font-bold mt-4 mb-2'>TEMPAHAN</h2>
                 <div className='flex flex-col gap-3'>
                     <div>
-                        <h2 className='font-bold'>Padang Bola</h2>
+                        <h2 className='font-bold'>Sewa Padang Bola</h2>
                         <p>
-                            Harga sewa adalah RM80 setiap sesi, dan pilihan sesi terdiri daripada pagi dan petang. (Hari Jumaat, Sabtu, dan juga pada hari-hari cuti yang lain sahaja)                   
-                        </p>
+                        <ul className='list-inside'>
+                          <li>RM80 / sesi</li>
+                          <li>Sesi Pagi dan Petang</li>
+                          <li>Hanya boleh ditempah pada Jumaat, Sabtu dan hari cuti yang lain sahaja</li>
+                          
+                        </ul>
+                    </p>
+
                     </div>
                     
                     <div>
-                        <h2 className='font-bold'>Sewa Padang</h2>
+                        <h2 className='font-bold'>Sewa Keseluruhan Padang</h2>
                         <p>
-                            Bagi yang ingin menyewa padang untuk pelbagai acara atau aktiviti sukan, kami menawarkan Harga sewa antara RM200 hingga RM300 sehingga tamat program. Sila
-                            nyatakan di "tujuan" berapa hari acara/sukan tersebut akan berlangsung
-                            (Hari Jumaat, Sabtu, dan juga pada hari-hari cuti yang lain sahaja)
-                        </p>
+                        <ul className='list-inside'>
+                          <li>RM200 - RM300 Harga dikira sehingga tamat program</li>
+                          <li>Hanya boleh ditempah pada Jumaat, Sabtu dan hari cuti yang lain sahaja</li>
+                        </ul>
+                    </p>
+<br></br>
                     </div>
                 </div>
-                <p className='font-bold'>Tarikh</p>
+                <p className='font-bold'>Tarikh *</p>
                 <TextField error={dateErr} helperText={dateErr?'Tarikh sudah diambil':''} value={info.date} onChange={e=>onDateChange(e)} type='date' className='w-full' variant='filled'/>
                 <FormControl>
-                    <InputLabel id="jenis-label">Jenis</InputLabel> 
+                    <InputLabel id="jenis-label">Jenis *</InputLabel> 
                     <Select
                         className='text-black'
                         label="Jenis"
