@@ -9,7 +9,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: Poppins;
-  color: white;
+  color: black;
 
   
 }
@@ -29,6 +29,7 @@ body {
 
 header {
   height: 10vh;
+  background-color: #01333A;
 }
 
 #videoUploadProgressBar {
@@ -71,3 +72,11 @@ table,th,td{
 html body{
   overflow-x: visible;
 }
+
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+

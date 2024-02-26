@@ -161,21 +161,30 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
     }
 
     return (
-        <div className="p-6 flex flex-col gap-6">
-            <div className='md: lg:w-3/4 mx-auto'>
-                <Carousel showThumbs={false} infiniteLoop>
+        <div className=" flex-col gap-6">
+            <div>
+            <div style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
+        pointerEvents: "none" // Allows clicks to go through the overlay
+    }} />
+                <Carousel width={"98.9vw"} showThumbs={false} infiniteLoop>
                     {images ? images.map((url,i) => {
                         return (
-                            <div className='w-full max-h-[70vh]'key={i}>
-                                <img src={url} alt="" className='w-full h-full'/>
+                            <div className=' 'key={i}>
+                                <img src={url} alt="" className=' h-full'/>
                             </div>
                         )
                     }):""}
                 </Carousel>
             </div>
         
-            <div>
-                <h2 className='font-bold mb-2'>MAKLUMAT PENYEWA</h2>
+            <div className="p-6 ">
+                <h2 className='text-white font-bold mb-2'>MAKLUMAT PENYEWA</h2>
                
                 <TextField sx={{ backgroundColor: 'white', marginBottom: '1rem' }} value={info.nama} onChange={e => setInfo({ ...info, nama: e.target.value })} className='w-full' label='Nama*' variant='filled'/>
                 <TextField sx={{ backgroundColor: 'white', marginBottom: '1rem' }} value={info.tel} onChange={e => setInfo({ ...info, tel: e.target.value })} className='w-full' label='No. Telefon*' variant='filled'/>
@@ -183,33 +192,33 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
 
 
                 
-                <h2 className='font-bold mt-4 mb-2'>TEMPAHAN</h2>
-                <div className='flex flex-col gap-3'>
+                <h2 className='text-white font-bold mt-4 mb-2'>TEMPAHAN</h2>
+                <div className='text-white first-line:flex flex-col gap-3'>
                     <div>
-                        <h2 className='font-bold'>Sewa Padang Bola</h2>
+                        <h2 className='text-white font-bold'>Sewa Padang Bola</h2>
                         <p>
-                        <ul className='list-inside'>
-                          <li>RM80 / sesi</li>
-                          <li>Sesi Pagi dan Petang</li>
-                          <li>Hanya boleh ditempah pada Jumaat, Sabtu dan hari cuti yang lain sahaja</li>
+                        <ul className='text-white list-inside'>
+                          <li className='text-white' >RM80 / sesi</li>
+                          <li  className='text-white'>Sesi Pagi dan Petang</li>
+                          <li  className='text-white'>Hanya boleh ditempah pada Jumaat, Sabtu dan hari cuti yang lain sahaja</li>
                           
                         </ul>
                     </p>
 
                     </div>
-                    
+                    <br></br>
                     <div>
-                        <h2 className='font-bold'>Sewa Keseluruhan Padang</h2>
+                        <h2 className='text-white font-bold'>Sewa Keseluruhan Padang</h2>
                         <p>
-                        <ul className='list-inside'>
-                          <li>RM200 - RM300 Harga dikira sehingga tamat program</li>
-                          <li>Hanya boleh ditempah pada Jumaat, Sabtu dan hari cuti yang lain sahaja</li>
+                        <ul className=' text-white list-inside'>
+                          <li  className='text-white'>RM200 - RM300 Harga dikira sehingga tamat program</li>
+                          <li  className='text-white'>Hanya boleh ditempah pada Jumaat, Sabtu dan hari cuti yang lain sahaja</li>
                         </ul>
                     </p>
 <br></br>
                     </div>
                 </div>
-                <p className='font-bold'>Tarikh *</p>
+                <p className='text-white font-bold'>Tarikh *</p>
                 <TextField 
                 sx={{ backgroundColor: 'white', marginBottom: 2 }} 
                 error={dateErr} 
@@ -243,7 +252,7 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
                    <FormControl>
                         <InputLabel id="sesi-label">Sesi</InputLabel> 
                         <Select
-                             style={{ backgroundColor: 'white' }}
+                             style={{ backgroundColor: 'white', width : "10vw"}}
                             className='text-black mb-4'
                             label="Sesi"
                             labelId="sesi-label"

@@ -23,7 +23,7 @@ import IconButton from '@mui/joy/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-
+import Logo from "./logokvsp1frs.jpg";
 export const Header = () => {
 
     const navigate = useNavigate()
@@ -85,11 +85,15 @@ export const Header = () => {
     }
 
     return (
-    <div>
-        <header className="sticky top-0 left-0 right-0 bg-opacity-40 p-4 shadow-xl flex justify-between items-center z-10">
-            <h1 onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">KVSP1 Field Reservation</h1>
-            {loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : null}
+
+        <div className="sticky top-0 z-20">
+        <header className="sticky top-0 left-0 right-0 bg-opacity-40 p-7 py-10 shadow-xl flex justify-between items-center">
+           <div className="flex items-center"> <img src={Logo} alt="Logo" style={{ width: "4.7vw", height: "auto" }}/>
+            <h1 onClick={() => navigate("/")} className="text-white text-2xl font-bold cursor-pointer ml-2 mt-0 mb-0">FRS</h1>
+            </div>{loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : null}
         </header>
+   
+    
         {/* Content */}
 
 
