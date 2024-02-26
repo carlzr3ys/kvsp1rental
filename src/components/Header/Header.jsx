@@ -88,11 +88,15 @@ export const Header = () => {
 
         <div className="sticky top-0 z-20">
         <header className="sticky top-0 left-0 right-0 bg-opacity-40 p-7 py-10 shadow-xl flex justify-between items-center">
-           <div className="flex items-center"> <img src={Logo} alt="Logo" style={{ width: "4.7vw", height: "auto" }}/>
-            <h1 onClick={() => navigate("/")} className="text-white text-2xl font-bold cursor-pointer ml-2 mt-0 mb-0">FRS</h1>
-            </div>{loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : null}
+            <div className="flex items-center logo-container"> 
+                <img src={Logo} alt="Logo" className='logo'/>
+                <h1 onClick={() => navigate("/")} className="text-white text-2xl font-bold cursor-pointer ml-2 mt-0 mb-0">FRS</h1>
+            </div>
+            {loggedIn ? <button onClick={logout} className="px-4 py-2 text-white rounded-md bg-red-500">Log out</button> : null}
         </header>
-   
+    
+    
+        
     
         {/* Content */}
 

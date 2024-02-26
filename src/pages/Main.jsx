@@ -162,26 +162,22 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
 
     return (
         <div className=" flex-col gap-6">
-            <div>
-            <div style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // Black with 50% opacity
-        pointerEvents: "none" // Allows clicks to go through the overlay
-    }} />
-                <Carousel width={"98.9vw"} showThumbs={false} infiniteLoop>
-                    {images ? images.map((url,i) => {
-                        return (
-                            <div className=' 'key={i}>
-                                <img src={url} alt="" className=' h-full'/>
-                            </div>
-                        )
-                    }):""}
-                </Carousel>
-            </div>
+    <div className='carousel'>
+        <Carousel width={"98.9vw"} showThumbs={false} infiniteLoop>
+            {images ? images.map((url,i) => {
+                return (
+                    <div className=' ' key={i}>
+                        <img src={url} alt="" className=' h-full'/>
+                    </div>
+                )
+            }):""}
+        </Carousel>
+        <div className="overlay">
+            <p className="text">Selamat Datang Ke KVSP1 Field Reservation System</p>
+        </div>
+    </div>
+
+
         
             <div className="p-6 ">
                 <h2 className='text-white font-bold mb-2'>MAKLUMAT PENYEWA</h2>
