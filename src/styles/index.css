@@ -98,7 +98,7 @@ html body{
 
 .text {
   color: white;
-  font-size: 4vw;
+  font-size: 5vw;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -111,7 +111,7 @@ html body{
   width: 100%;
   max-width: 70px; /* Adjust as needed */
 }
-
+ 
 .logo {
   width: 100%;
   height: auto;

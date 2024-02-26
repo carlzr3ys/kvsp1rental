@@ -162,20 +162,22 @@ ${info.jenis === "padang_bola" ? `<b>Tujuan</b>: ${info.tujuan}` : ``}
 
     return (
         <div className=" flex-col gap-6">
-    <div className='carousel'>
-        <Carousel width={"98.9vw"} showThumbs={false} infiniteLoop>
-            {images ? images.map((url,i) => {
-                return (
-                    <div className=' ' key={i}>
-                        <img src={url} alt="" className=' h-full'/>
-                    </div>
-                )
-            }):""}
-        </Carousel>
-        <div className="overlay">
-            <p className="text">Selamat Datang Ke KVSP1 Field Reservation System</p>
+        <div className='carousel'>
+            <Carousel width={"98.9vw"} showThumbs={false} showIndicators={false} infiniteLoop>
+                {images ? images.map((url,i) => {
+                    return (
+                        <div className=' ' key={i}>
+                            <img src={url} alt="" className=' h-[70vh] object-cover'/>
+                        </div>
+                    )
+                }):""}
+            </Carousel>
+            <div className="overlay">
+                <p className="text">Selamat Datang Ke KVSP1 Field Reservation System</p>
+            </div>
         </div>
-    </div>
+ 
+    
 
 
         
