@@ -33,29 +33,29 @@ export const AdminLogin = () => {
                 if(password === doc.data().password){
                     localStorage.setItem('loggedIn',true)
                     navigate('/admin')
-                    return toast.success('Logged in as Admin',{toastId:"admin_success"})
+                    return toast.success('Login sebagai admin',{toastId:"admin_success"})
                 }
             }
             count++;
         })
 
         if(count == querySnapshot.size){
-            return toast.error("Login failed")
+            return toast.error("Gagal Login")
         }
     }
 
     return (
         <div className="p-6 flex flex-col gap-3 items-center justify-center">
-            <div className="flex flex-col gap-3">
-                <h1 className="text-2xl font-bold">Admin Login</h1>
+            <div className="text-white flex flex-col gap-3">
+                <h1 className="text-white text-2xl font-bold">Admin Login</h1>
                 <table>
                     <tbody>
                         <tr>
-                            <td>Username: </td>
+                            <td style={{ color: "white" }}>Username: </td>
                             <td><input onChange={e => setLoginCreds({...loginCreds,username:e.target.value})} className="p-2 outline-none" type="text" /></td>
                         </tr>
                         <tr>
-                            <td>Password: </td>
+                            <td style={{ color: "white" }}>Password: </td>
                             <td><input onChange={e => setLoginCreds({...loginCreds,password:e.target.value})} className="p-2 outline-none" type="password" /></td>
                         </tr>
                     </tbody>

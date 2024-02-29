@@ -7,6 +7,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import { Bar } from 'react-chartjs-2';
+
 
 export const Admin = () => {
 
@@ -64,7 +66,7 @@ export const Admin = () => {
         uploadTask.on("state_changed", (snapshot) => {
             // You can use this to show upload progress
         },(err) => {
-            toast.error("Image failed to upload: \n"+err)
+            toast.error("Gambar gagal dimuat naik: \n"+err)
         }, () => {
             getDownloadURL(uploadTask.snapshot.ref).then(url => {
                 temp.push({url:url,path:uploadTask.snapshot.ref.fullPath})
@@ -76,13 +78,13 @@ export const Admin = () => {
     const deleteImage = (path,url) => {
         let temp = [...images]
         // eslint-disable-next-line no-restricted-globals
-        if(confirm("Are you sure you want to delete this image?")){
+        if(confirm("Anda pasti untuk padam gambar ini?")){
             const imageRef = ref(storage,path)
 
             deleteObject(imageRef).then(() => {
                 toast.success("Image deleted")
             }).catch((error) => {
-                toast.error("Couldn't delete image : \n"+error)
+                toast.error("Padam gambar gagal : \n"+error)
             });
 
             let newTemp = temp.filter(image => image.path !== path && image.url !== url)
@@ -103,9 +105,9 @@ export const Admin = () => {
 
     return (
         <div className='admin p-6'>
-            <h1 className="text-2xl mb-4 font-bold text-center">Admin KVSP1 FRS</h1>
+            <h1 className="text-white text-2xl mb-4 font-bold text-center">Admin KVSP1 FRS</h1>
             <div className="bg-white p-4 lg:px-6 rounded-md lg:w-[70%] mx-auto flex flex-col gap-4">
-                <h2 className="text-xl font-bold">Promo Images</h2>
+                <h2 className="text-xl font-bold">Gambar</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     {images ? images.map((image,i) => {
                             return (
@@ -120,10 +122,10 @@ export const Admin = () => {
                 </div>
                 <input id='fileInput' onChange={imageUpload} type="file" name='fileInput' hidden/>
                 <label htmlFor="fileInput">
-                    <p className="bg-green-500 text-white px-4 py-2 rounded-md w-full text-center cursor-pointer">+ ADD IMAGE</p>
+                    <p className="bg-green-500 text-white px-4 py-2 rounded-md w-full text-center cursor-pointer">+ TAMBAH GAMBAR</p>
                 </label>
 
-                <h2 className="text-xl font-bold mt-2">Orders</h2>
+                <h2 className="text-xl font-bold mt-2">Tempahan</h2>
                 <div className="flex flex-col gap-3">
                     {orders && orders.map((order,i)=>
                         <div className="tempahan flex flex-col lg:flex-row gap-2 bg-gray-200 px-4 py-2 rounded-md" key={i}>
